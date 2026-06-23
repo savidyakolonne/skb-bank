@@ -1,10 +1,11 @@
 package com.skbbank.backend.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
-@Table(name = "uesrs")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,7 +15,12 @@ public class User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String email;
+
+    @NotBlank
     private String password;
 }
