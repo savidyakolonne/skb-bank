@@ -1,16 +1,24 @@
 package com.skbbank.backend.auth;
 
+import com.skbbank.backend.security.JwtService;
 import com.skbbank.backend.user.User;
 import com.skbbank.backend.user.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository){
+    public AuthService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public User register(RegisterRequest request){
@@ -23,21 +31,27 @@ public class AuthService {
 
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         return userRepository.save(user);
     }
 
-    public String login(LoginRequest request){
+    public AuthResponse login(LoginRequest request){
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if(!user.getPassword().equals(request.getPassword())){
+        if(!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword()
+        )){
             throw new RuntimeException("Invalid password");
         }
 
-        return "Login successful";
+        String token = jwtService.generateToken(user.getEmail());
+
+        return new AuthResponse(token);
+
     }
 
 }
