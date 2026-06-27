@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import com.skbbank.backend.account.Account;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -23,4 +26,7 @@ public class User{
 
     @NotBlank
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Account> accounts;
 }
