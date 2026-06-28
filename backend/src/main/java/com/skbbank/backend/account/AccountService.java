@@ -1,5 +1,8 @@
 package com.skbbank.backend.account;
 
+import com.skbbank.backend.common.exception.AccountNotFoundException;
+import com.skbbank.backend.common.exception.InsufficientBalanceException;
+import com.skbbank.backend.common.exception.UserNotFoundException;
 import com.skbbank.backend.user.User;
 import com.skbbank.backend.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -33,7 +36,7 @@ public class AccountService {
     public AccountResponse createAccount(Long userId, String accountType){
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
 
         Account account = new Account();
 
@@ -76,7 +79,7 @@ public class AccountService {
         Account account = findAccount(accountId);
 
         if(account.getBalance().compareTo(amount) < 0){
-            throw new RuntimeException("Insufficient balance");
+            throw new InsufficientBalanceException();
         }
 
         account.setBalance(account.getBalance().subtract(amount));
@@ -104,7 +107,7 @@ public class AccountService {
     public AccountResponse getAccountById(Long id){
 
         Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(AccountNotFoundException::new);
 
         return accountMapper.toResponse(account);
     }
@@ -121,7 +124,7 @@ public class AccountService {
     private Account findAccount(Long id){
 
         return accountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(AccountNotFoundException::new);
     }
 
 }

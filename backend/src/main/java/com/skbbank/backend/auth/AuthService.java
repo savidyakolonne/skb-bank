@@ -1,5 +1,8 @@
 package com.skbbank.backend.auth;
 
+import com.skbbank.backend.common.exception.EmailAlreadyExistsException;
+import com.skbbank.backend.common.exception.UserNotFoundException;
+import com.skbbank.backend.common.exception.InvalidPasswordException;
 import com.skbbank.backend.common.security.JwtService;
 import com.skbbank.backend.user.User;
 import com.skbbank.backend.user.UserRepository;
@@ -24,7 +27,7 @@ public class AuthService {
     public User register(RegisterRequest request){
 
         if(userRepository.findByEmail(request.getEmail()).isPresent()){
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException();
         }
 
         User user = new User();
@@ -39,13 +42,13 @@ public class AuthService {
     public AuthResponse login(LoginRequest request){
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
 
         if(!passwordEncoder.matches(
                 request.getPassword(),
                 user.getPassword()
         )){
-            throw new RuntimeException("Invalid password");
+            throw new InvalidPasswordException();
         }
 
         String token = jwtService.generateToken(user.getEmail());
