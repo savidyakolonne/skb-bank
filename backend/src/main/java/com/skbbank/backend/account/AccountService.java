@@ -9,22 +9,28 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+import com.skbbank.backend.account.dto.AccountResponse;
+import com.skbbank.backend.account.mapper.AccountMapper;
+
 @Service
 public class AccountService {
 
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
+    private final AccountMapper accountMapper;
 
     public AccountService(
             AccountRepository accountRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            AccountMapper accountMapper
     ){
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
+        this.accountMapper = accountMapper;
     }
 
     // create a new account
-    public Account createAccount(Long userId, String accountType){
+    public AccountResponse createAccount(Long userId, String accountType){
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -38,28 +44,36 @@ public class AccountService {
         account.setCreatedAt(LocalDateTime.now());
         account.setUser(user);
 
-        return accountRepository.save(account);
+        Account savedAccount =  accountRepository.save(account);
+
+        return accountMapper.toResponse(savedAccount);
     }
 
     // get all accounts of a user
-    public List<Account> getAccountsByUser(Long userId){
-        return accountRepository.findByUserId(userId);
+    public List<AccountResponse> getAccountsByUser(Long userId){
+
+        return accountRepository.findByUserId(userId)
+                .stream()
+                .map(accountMapper::toResponse)
+                .toList();
     }
 
     // deposit money
-    public Account deposit(Long accountId, BigDecimal amount){
+    public AccountResponse deposit(Long accountId, BigDecimal amount){
 
-        Account account = getAccountsById(accountId);
+        Account account = findAccount(accountId);
 
         account.setBalance(account.getBalance().add(amount));
 
-        return accountRepository.save(account);
+        Account updatedAccount = accountRepository.save(account);
+
+        return accountMapper.toResponse(updatedAccount);
     }
 
     // withdraw money
-    public Account withdraw(Long accountId, BigDecimal amount){
+    public AccountResponse withdraw(Long accountId, BigDecimal amount){
 
-        Account account = getAccountsById(accountId);
+        Account account = findAccount(accountId);
 
         if(account.getBalance().compareTo(amount) < 0){
             throw new RuntimeException("Insufficient balance");
@@ -67,7 +81,9 @@ public class AccountService {
 
         account.setBalance(account.getBalance().subtract(amount));
 
-        return accountRepository.save(account);
+        Account updatedAccount =  accountRepository.save(account);
+
+        return accountMapper.toResponse(updatedAccount);
     }
 
     // generate unique account number
@@ -85,15 +101,27 @@ public class AccountService {
     }
 
     // get account by id
-    public Account getAccountsById(Long id){
+    public AccountResponse getAccountById(Long id){
 
-        return accountRepository.findById(id)
+        Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        return accountMapper.toResponse(account);
     }
 
     // get all accounts
-    public List<Account> getAllAccounts() {
-        return accountRepository.findAll();
+    public List<AccountResponse> getAllAccounts() {
+        return accountRepository.findAll()
+                .stream()
+                .map(accountMapper::toResponse)
+                .toList();
+    }
+
+    // find account
+    private Account findAccount(Long id){
+
+        return accountRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
     }
 
 }

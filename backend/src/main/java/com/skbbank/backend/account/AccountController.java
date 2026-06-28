@@ -1,8 +1,11 @@
 package com.skbbank.backend.account;
 
+import com.skbbank.backend.account.dto.AccountResponse;
+import com.skbbank.backend.account.dto.CreateAccountRequest;
+import com.skbbank.backend.account.dto.DepositRequest;
+import com.skbbank.backend.account.dto.WithdrawRequest;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -16,42 +19,44 @@ public class AccountController {
     }
 
     @PostMapping
-    public Account createAccount(
-            @RequestParam Long userId,
-            @RequestParam String accountType
-    ) {
-        return accountService.createAccount(userId, accountType);
+    public AccountResponse createAccount(
+            @RequestBody CreateAccountRequest request
+            ) {
+        return accountService.createAccount(
+                request.getUserId(),
+                request.getAccountType()
+        );
     }
 
     @GetMapping
-    public List<Account> getAllAccounts() {
+    public List<AccountResponse> getAllAccounts() {
         return accountService.getAllAccounts();
     }
 
     @GetMapping("/{id}")
-    public Account getAccountById(@PathVariable Long id) {
-        return accountService.getAccountsById(id);
+    public AccountResponse getAccountById(@PathVariable Long id) {
+        return accountService.getAccountById(id);
     }
 
     @GetMapping("/user/{userId}")
-    public List<Account> getAccountsByUser(@PathVariable Long userId) {
+    public List<AccountResponse> getAccountsByUser(@PathVariable Long userId) {
         return accountService.getAccountsByUser(userId);
     }
 
     @PutMapping("/{id}/deposit")
-    public Account deposit(
+    public AccountResponse deposit(
             @PathVariable Long id,
-            @RequestParam BigDecimal amount
-    ) {
-        return accountService.deposit(id, amount);
+            @RequestBody DepositRequest request
+            ) {
+        return accountService.deposit(id, request.getAmount());
     }
 
     @PutMapping("/{id}/withdraw")
-    public Account withdraw(
+    public AccountResponse withdraw(
             @PathVariable Long id,
-            @RequestParam BigDecimal amount
-    ) {
-        return accountService.withdraw(id, amount);
+            @RequestBody WithdrawRequest request
+            ) {
+        return accountService.withdraw(id, request.getAmount());
     }
 
 }
