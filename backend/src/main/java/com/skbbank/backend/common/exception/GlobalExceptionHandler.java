@@ -1,4 +1,4 @@
-package com.skbbank.backend.exception;
+package com.skbbank.backend.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

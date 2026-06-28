@@ -1,4 +1,4 @@
-package com.skbbank.backend.security;
+package com.skbbank.backend.common.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
 package com.skbbank.backend.auth;
 
-import com.skbbank.backend.security.JwtService;
+import com.skbbank.backend.common.security.JwtService;
 import com.skbbank.backend.user.User;
 import com.skbbank.backend.user.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;

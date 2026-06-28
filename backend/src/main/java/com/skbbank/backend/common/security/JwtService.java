@@ -1,4 +1,4 @@
-package com.skbbank.backend.security;
+package com.skbbank.backend.common.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
