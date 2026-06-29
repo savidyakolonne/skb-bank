@@ -4,6 +4,7 @@ import com.skbbank.backend.account.dto.AccountResponse;
 import com.skbbank.backend.account.dto.CreateAccountRequest;
 import com.skbbank.backend.account.dto.DepositRequest;
 import com.skbbank.backend.account.dto.WithdrawRequest;
+import com.skbbank.backend.common.response.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,28 +21,56 @@ public class AccountController {
     }
 
     @PostMapping
-    public AccountResponse createAccount(
-            @RequestBody CreateAccountRequest request
+    public ApiResponse<AccountResponse> createAccount(
+            @Valid @RequestBody CreateAccountRequest request
             ) {
-        return accountService.createAccount(
+        AccountResponse account = accountService.createAccount(
                 request.getUserId(),
                 request.getAccountType()
+        );
+
+        return new ApiResponse<>(
+                true,
+                "Account created successfully",
+                account
         );
     }
 
     @GetMapping
-    public List<AccountResponse> getAllAccounts() {
-        return accountService.getAllAccounts();
+    public  ApiResponse<List<AccountResponse>> getAllAccounts() {
+
+        List<AccountResponse> accounts = accountService.getAllAccounts();
+
+        return new ApiResponse<>(
+                true,
+                "Accounts retrieved successfully",
+                accounts
+        );
     }
 
     @GetMapping("/{id}")
     public AccountResponse getAccountById(@PathVariable Long id) {
-        return accountService.getAccountById(id);
+        AccountResponse account = accountService.getAccountById(id);
+
+        return new ApiResponse<>(
+                true,
+                "Account retrieved successfully",
+                account
+        ).getData();
     }
 
     @GetMapping("/user/{userId}")
-    public List<AccountResponse> getAccountsByUser(@PathVariable Long userId) {
-        return accountService.getAccountsByUser(userId);
+    public List<AccountResponse> getAccountsByUser(
+            @PathVariable Long userId
+    ) {
+        List<AccountResponse> accounts =
+                accountService.getAccountsByUser(userId);
+
+        return new ApiResponse<>(
+                true,
+                "User accounts retrieved successfully",
+                accounts
+        ).getData();
     }
 
     @PutMapping("/{id}/deposit")
@@ -49,7 +78,15 @@ public class AccountController {
             @PathVariable Long id,
             @Valid @RequestBody DepositRequest request
             ) {
-        return accountService.deposit(id, request.getAmount());
+
+        AccountResponse account =
+                accountService.deposit(id, request.getAmount());
+
+        return new ApiResponse<>(
+                true,
+                "Deposit successfully",
+                account
+        ).getData();
     }
 
     @PutMapping("/{id}/withdraw")
@@ -57,7 +94,14 @@ public class AccountController {
             @PathVariable Long id,
             @Valid @RequestBody WithdrawRequest request
             ) {
-        return accountService.withdraw(id, request.getAmount());
+        AccountResponse account =
+                accountService.withdraw(id, request.getAmount());
+
+        return new ApiResponse<>(
+                true,
+                "Withdrawal successful",
+                account
+        ).getData();
     }
 
 }
