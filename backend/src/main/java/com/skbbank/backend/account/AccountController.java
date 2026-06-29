@@ -4,6 +4,7 @@ import com.skbbank.backend.account.dto.AccountResponse;
 import com.skbbank.backend.account.dto.CreateAccountRequest;
 import com.skbbank.backend.account.dto.DepositRequest;
 import com.skbbank.backend.account.dto.WithdrawRequest;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class AccountController {
     @PutMapping("/{id}/deposit")
     public AccountResponse deposit(
             @PathVariable Long id,
-            @RequestBody DepositRequest request
+            @Valid @RequestBody DepositRequest request
             ) {
         return accountService.deposit(id, request.getAmount());
     }
@@ -54,7 +55,7 @@ public class AccountController {
     @PutMapping("/{id}/withdraw")
     public AccountResponse withdraw(
             @PathVariable Long id,
-            @RequestBody WithdrawRequest request
+            @Valid @RequestBody WithdrawRequest request
             ) {
         return accountService.withdraw(id, request.getAmount());
     }
