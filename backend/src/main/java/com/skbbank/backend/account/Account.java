@@ -1,5 +1,7 @@
 package com.skbbank.backend.account;
 
+import com.skbbank.backend.account.enums.AccountStatus;
+import com.skbbank.backend.account.enums.AccountType;
 import com.skbbank.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,14 +27,16 @@ public class Account {
     @Column(name = "account_number", nullable = false, unique = true)
     private String accountNumber;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "account_type", nullable = false)
-    private String accountType;
+    private AccountType accountType;
 
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal balance;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private AccountStatus status;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

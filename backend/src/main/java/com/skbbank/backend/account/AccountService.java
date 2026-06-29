@@ -1,5 +1,7 @@
 package com.skbbank.backend.account;
 
+import com.skbbank.backend.account.enums.AccountStatus;
+import com.skbbank.backend.account.enums.AccountType;
 import com.skbbank.backend.common.exception.AccountNotFoundException;
 import com.skbbank.backend.common.exception.InsufficientBalanceException;
 import com.skbbank.backend.common.exception.UserNotFoundException;
@@ -33,7 +35,7 @@ public class AccountService {
     }
 
     // create a new account
-    public AccountResponse createAccount(Long userId, String accountType){
+    public AccountResponse createAccount(Long userId, AccountType accountType){
 
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
@@ -43,7 +45,7 @@ public class AccountService {
         account.setAccountNumber(generateAccountNumber());
         account.setAccountType(accountType);
         account.setBalance(BigDecimal.ZERO);
-        account.setStatus("ACTIVE");
+        account.setStatus(AccountStatus.ACTIVE);
         account.setCreatedAt(LocalDateTime.now());
         account.setUser(user);
 

@@ -1,5 +1,6 @@
 package com.skbbank.backend.account.dto;
 
+import com.skbbank.backend.account.enums.AccountType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -11,5 +12,5 @@ public class CreateAccountRequest {
     private Long userId;
 
     @NotBlank(message = "Account type is required")
-    private String accountType;
+    private AccountType accountType;
 }
