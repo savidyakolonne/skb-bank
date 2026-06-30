@@ -2,6 +2,7 @@ package com.skbbank.backend.account;
 
 import com.skbbank.backend.account.enums.AccountStatus;
 import com.skbbank.backend.account.enums.AccountType;
+import com.skbbank.backend.transaction.Transaction;
 import com.skbbank.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "accounts")
@@ -44,4 +46,7 @@ public class Account {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> transactions;
 }
