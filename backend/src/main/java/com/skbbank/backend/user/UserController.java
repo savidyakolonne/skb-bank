@@ -1,6 +1,12 @@
 package com.skbbank.backend.user;
 
+import com.skbbank.backend.common.response.ApiResponse;
+import com.skbbank.backend.user.dto.CreateUserRequest;
+import com.skbbank.backend.user.dto.UpdateUserRequest;
+import com.skbbank.backend.user.dto.UserResponse;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -13,18 +19,69 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Get all users
     @GetMapping
-    public List<User> getUsers(){
-        return userService.getAllUsers();
+    public ApiResponse<List<UserResponse>> getAllUsers(){
+
+        return new ApiResponse<>(
+                true,
+                "Users retrieved successfully",
+                userService.getAllUsers()
+        );
     }
 
-    @PostMapping
-    public User createUser(@RequestBody User user){
-        return userService.createUser(user);
-    }
-
+    // Get user by ID
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id){
-        return userService.getUserById(id);
+    public ApiResponse<UserResponse> getUserById(
+            @PathVariable Long id
+    ){
+
+        return new ApiResponse<>(
+                true,
+                "User retrieved successfully",
+                userService.getUserById(id)
+        );
+    }
+
+    // Create user
+    @PostMapping
+    public ApiResponse<UserResponse> createUser(
+            @Valid @RequestBody CreateUserRequest request
+    ){
+
+        return new ApiResponse<>(
+                true,
+                "User created successfully",
+                userService.createUser(request)
+        );
+    }
+
+    // Update user
+    @PutMapping("/{id}")
+    public ApiResponse<UserResponse> updateUser(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateUserRequest request
+    ){
+
+        return new ApiResponse<>(
+                true,
+                "User updated successfully",
+                userService.updateUser(id, request)
+        );
+    }
+
+    // Delete user
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> deleteUser(
+            @PathVariable Long id
+    ){
+
+        userService.deleteUser(id);
+
+        return new ApiResponse<>(
+                true,
+                "User deleted successfully",
+                null
+        );
     }
 }
