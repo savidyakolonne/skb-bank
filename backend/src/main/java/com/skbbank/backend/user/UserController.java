@@ -4,12 +4,20 @@ import com.skbbank.backend.common.response.ApiResponse;
 import com.skbbank.backend.user.dto.CreateUserRequest;
 import com.skbbank.backend.user.dto.UpdateUserRequest;
 import com.skbbank.backend.user.dto.UserResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(
+        name = "Users",
+        description = "User Management APIs"
+)
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -21,6 +29,7 @@ public class UserController {
     }
 
     // Get all users
+    @Operation(summary = "Get all users")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ApiResponse<List<UserResponse>> getAllUsers(){
@@ -33,6 +42,7 @@ public class UserController {
     }
 
     // Get user by ID
+    @Operation(summary = "Get user by id")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/{id}")
     public ApiResponse<UserResponse> getUserById(
@@ -47,6 +57,7 @@ public class UserController {
     }
 
     // Create user
+    @Operation(summary = "Create new user")
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ApiResponse<UserResponse> createUser(
@@ -61,6 +72,7 @@ public class UserController {
     }
 
     // Update user
+    @Operation(summary = "Update user")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PutMapping("/{id}")
     public ApiResponse<UserResponse> updateUser(
@@ -76,6 +88,7 @@ public class UserController {
     }
 
     // Delete user
+    @Operation(summary = "Delete user")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteUser(

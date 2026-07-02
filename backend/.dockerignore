@@ -1,0 +1,13 @@
+target
+.idea
+.git
+.gitignore
+
+Dockerfile
+docker-compose.yml
+
+README.md
+
+*.iml
+
+.mvn/wrapper/maven-wrapper.jar

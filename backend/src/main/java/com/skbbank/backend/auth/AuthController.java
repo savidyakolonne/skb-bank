@@ -2,9 +2,15 @@ package com.skbbank.backend.auth;
 
 import com.skbbank.backend.common.response.ApiResponse;
 import com.skbbank.backend.user.User;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(
+        name = "Authentication",
+        description = "Authentication APIs"
+)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -15,6 +21,7 @@ public class AuthController {
         this.authService = authService;
     }
 
+    @Operation(summary = "Register a new user")
     @PostMapping("/register")
     public ApiResponse<User> register(
             @Valid @RequestBody RegisterRequest request){
@@ -28,6 +35,7 @@ public class AuthController {
         );
     }
 
+    @Operation(summary = "Authenticate user and generate JWT")
     @PostMapping("/login")
     public ApiResponse<AuthResponse> login(
             @Valid @RequestBody LoginRequest request){

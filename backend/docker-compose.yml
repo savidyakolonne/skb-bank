@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: skb-postgres
+
+    environment:
+      POSTGRES_DB: skb_bank
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+
+    container_name: skb-backend
+
+    depends_on:
+      - postgres
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skb_bank
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+
+volumes:
+  postgres-data:
