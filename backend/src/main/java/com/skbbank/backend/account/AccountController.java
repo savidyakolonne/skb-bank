@@ -6,6 +6,7 @@ import com.skbbank.backend.account.dto.DepositRequest;
 import com.skbbank.backend.account.dto.WithdrawRequest;
 import com.skbbank.backend.common.response.ApiResponse;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ApiResponse<AccountResponse> createAccount(
             @Valid @RequestBody CreateAccountRequest request
@@ -36,6 +38,7 @@ public class AccountController {
         );
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping
     public  ApiResponse<List<AccountResponse>> getAllAccounts() {
 
@@ -48,6 +51,7 @@ public class AccountController {
         );
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/{id}")
     public AccountResponse getAccountById(@PathVariable Long id) {
         AccountResponse account = accountService.getAccountById(id);
@@ -59,6 +63,7 @@ public class AccountController {
         ).getData();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/user/{userId}")
     public List<AccountResponse> getAccountsByUser(
             @PathVariable Long userId
@@ -73,6 +78,7 @@ public class AccountController {
         ).getData();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PutMapping("/{id}/deposit")
     public AccountResponse deposit(
             @PathVariable Long id,
@@ -89,6 +95,7 @@ public class AccountController {
         ).getData();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PutMapping("/{id}/withdraw")
     public AccountResponse withdraw(
             @PathVariable Long id,
