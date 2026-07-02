@@ -5,12 +5,20 @@ import com.skbbank.backend.account.dto.CreateAccountRequest;
 import com.skbbank.backend.account.dto.DepositRequest;
 import com.skbbank.backend.account.dto.WithdrawRequest;
 import com.skbbank.backend.common.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(
+        name = "Accounts",
+        description = "Bank Account APIs"
+)
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountController {
@@ -21,6 +29,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    @Operation(summary = "Create account")
     @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ApiResponse<AccountResponse> createAccount(
@@ -38,6 +47,7 @@ public class AccountController {
         );
     }
 
+    @Operation(summary = "Get all accounts")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping
     public  ApiResponse<List<AccountResponse>> getAllAccounts() {
@@ -78,6 +88,7 @@ public class AccountController {
         ).getData();
     }
 
+    @Operation(summary = "Deposit money")
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/{id}/deposit")
     public AccountResponse deposit(
@@ -95,6 +106,7 @@ public class AccountController {
         ).getData();
     }
 
+    @Operation(summary = "Withdraw money")
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/{id}/withdraw")
     public AccountResponse withdraw(

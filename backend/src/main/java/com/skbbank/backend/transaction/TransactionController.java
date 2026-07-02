@@ -3,12 +3,20 @@ package com.skbbank.backend.transaction;
 import com.skbbank.backend.common.response.ApiResponse;
 import com.skbbank.backend.transaction.dto.TransactionResponse;
 import com.skbbank.backend.transaction.dto.TransferRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(
+        name = "Transactions",
+        description = "Transaction APIs"
+)
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequestMapping("/api/transactions")
 public class TransactionController {
@@ -20,6 +28,7 @@ public class TransactionController {
     }
 
     // get all transactions
+    @Operation(summary = "Get all transactions")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ApiResponse<List<TransactionResponse>> getAllTransactions(){
@@ -35,6 +44,7 @@ public class TransactionController {
     }
 
     // get all transactions by ID
+    @Operation(summary = "Get transaction by id")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{id}")
     public ApiResponse<TransactionResponse> getTransactionById(
@@ -68,6 +78,7 @@ public class TransactionController {
     }
 
     // transfer money
+    @Operation(summary = "Transfer money")
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/transfer")
     public ApiResponse<TransactionResponse> transferMoney(
