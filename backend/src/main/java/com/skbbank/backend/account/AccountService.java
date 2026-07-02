@@ -5,6 +5,7 @@ import com.skbbank.backend.account.enums.AccountType;
 import com.skbbank.backend.common.exception.AccountNotFoundException;
 import com.skbbank.backend.common.exception.InsufficientBalanceException;
 import com.skbbank.backend.common.exception.UserNotFoundException;
+import com.skbbank.backend.common.validation.AccountValidator;
 import com.skbbank.backend.user.User;
 import com.skbbank.backend.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -23,15 +24,18 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
     private final AccountMapper accountMapper;
+    private final AccountValidator accountValidator;
 
     public AccountService(
             AccountRepository accountRepository,
             UserRepository userRepository,
-            AccountMapper accountMapper
+            AccountMapper accountMapper,
+            AccountValidator accountValidator
     ){
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
         this.accountMapper = accountMapper;
+        this.accountValidator = accountValidator;
     }
 
     // create a new account
@@ -68,7 +72,7 @@ public class AccountService {
 
         Account account = findAccount(accountId);
 
-        account.setBalance(account.getBalance().add(amount));
+        accountValidator.validateDeposit(amount);
 
         Account updatedAccount = accountRepository.save(account);
 
@@ -84,7 +88,7 @@ public class AccountService {
             throw new InsufficientBalanceException();
         }
 
-        account.setBalance(account.getBalance().subtract(amount));
+        accountValidator.validateWithdraw(account, amount);
 
         Account updatedAccount =  accountRepository.save(account);
 
