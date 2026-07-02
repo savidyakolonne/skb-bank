@@ -3,8 +3,8 @@ package com.skbbank.backend.transaction;
 import com.skbbank.backend.account.Account;
 import com.skbbank.backend.account.AccountRepository;
 import com.skbbank.backend.common.exception.AccountNotFoundException;
-import com.skbbank.backend.common.exception.InsufficientBalanceException;
 import com.skbbank.backend.common.exception.TransactionNotFoundException;
+import com.skbbank.backend.common.validation.TransactionValidator;
 import com.skbbank.backend.transaction.dto.TransactionResponse;
 import com.skbbank.backend.transaction.dto.TransferRequest;
 import com.skbbank.backend.transaction.mapper.TransactionMapper;
@@ -21,15 +21,18 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
     private final TransactionMapper transactionMapper;
+    private final TransactionValidator transactionValidator;
 
     public TransactionService(
             TransactionRepository transactionRepository,
             AccountRepository accountRepository,
-            TransactionMapper transactionMapper
+            TransactionMapper transactionMapper,
+            TransactionValidator transactionValidator
     ) {
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
         this.transactionMapper = transactionMapper;
+        this.transactionValidator = transactionValidator;
     }
 
     // Get all transactions
@@ -69,9 +72,11 @@ public class TransactionService {
         Account receiver = accountRepository.findById(request.getReceiverAccountId())
                 .orElseThrow(AccountNotFoundException::new);
 
-        if (sender.getBalance().compareTo(request.getAmount()) < 0) {
-            throw new InsufficientBalanceException();
-        }
+        transactionValidator.validateTransfer(
+                sender,
+                receiver,
+                request.getAmount()
+        );
 
         sender.setBalance(sender.getBalance().subtract(request.getAmount()));
         receiver.setBalance(receiver.getBalance().add(request.getAmount()));
@@ -79,27 +84,39 @@ public class TransactionService {
         accountRepository.save(sender);
         accountRepository.save(receiver);
 
-        Transaction senderTransaction = new Transaction();
+        Transaction senderTransaction = createTransaction(
+                sender,
+                TransactionType.TRANSFER_OUT,
+                request.getAmount(),
+                request.getDescription()
+        );
 
-        senderTransaction.setAccount(sender);
-        senderTransaction.setAmount(request.getAmount());
-        senderTransaction.setTransactionType(TransactionType.TRANSFER_OUT);
-        senderTransaction.setDescription(request.getDescription());
-        senderTransaction.setCreatedAt(LocalDateTime.now());
-
-        transactionRepository.save(senderTransaction);
-
-        Transaction receiverTransaction = new Transaction();
-
-        receiverTransaction.setAccount(receiver);
-        receiverTransaction.setAmount(request.getAmount());
-        receiverTransaction.setTransactionType(TransactionType.TRANSFER_IN);
-        receiverTransaction.setDescription(request.getDescription());
-        receiverTransaction.setCreatedAt(LocalDateTime.now());
-
-        transactionRepository.save(receiverTransaction);
+        createTransaction(
+                receiver,
+                TransactionType.TRANSFER_IN,
+                request.getAmount(),
+                request.getDescription()
+        );
 
         return transactionMapper.toResponse(senderTransaction);
+    }
+
+    private Transaction createTransaction(
+            Account account,
+            TransactionType type,
+            java.math.BigDecimal amount,
+            String description
+    ) {
+
+        Transaction transaction = new Transaction();
+
+        transaction.setAccount(account);
+        transaction.setTransactionType(type);
+        transaction.setAmount(amount);
+        transaction.setDescription(description);
+        transaction.setCreatedAt(LocalDateTime.now());
+
+        return transactionRepository.save(transaction);
     }
 
 }

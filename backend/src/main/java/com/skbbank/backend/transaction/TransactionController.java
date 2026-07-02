@@ -4,6 +4,7 @@ import com.skbbank.backend.common.response.ApiResponse;
 import com.skbbank.backend.transaction.dto.TransactionResponse;
 import com.skbbank.backend.transaction.dto.TransferRequest;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class TransactionController {
     }
 
     // get all transactions
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ApiResponse<List<TransactionResponse>> getAllTransactions(){
 
@@ -33,6 +35,7 @@ public class TransactionController {
     }
 
     // get all transactions by ID
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{id}")
     public ApiResponse<TransactionResponse> getTransactionById(
             @PathVariable Long id
@@ -48,6 +51,7 @@ public class TransactionController {
     }
 
     // get transaction by account
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/account/{accountId}")
     public ApiResponse<List<TransactionResponse>> getAllTransactionsByAccount(
             @PathVariable Long accountId
@@ -64,6 +68,7 @@ public class TransactionController {
     }
 
     // transfer money
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/transfer")
     public ApiResponse<TransactionResponse> transferMoney(
             @Valid @RequestBody TransferRequest request
