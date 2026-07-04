@@ -1,15 +1,15 @@
 import PageHeader from "../../components/PageHeader";
 
-export default function CreateAccount(){
+export default function Transactions(){
     return(
         <>
             <PageHeader
-                title="Create Account"
-                subtitle="Open a new bank account"
+                title="Transactions"
+                subtitle="Transaction history"
             />
 
             <div className=" bg-white rounded-xl p-6 shadow">
-                Create Account Page
+                Transactions Page
             </div>
         </>
     );

@@ -1,15 +1,15 @@
 import PageHeader from "../../components/PageHeader";
 
-export default function Transfer(){
+export default function Users(){
     return(
         <>
             <PageHeader
-                title="Transfer Money"
-                subtitle="Transfer between accounts"
+                title="Users"
+                subtitle="Manage users"
             />
 
             <div className=" bg-white rounded-xl shadow">
-                Transfer Money Page
+                Users Page
             </div>
         </>
     );

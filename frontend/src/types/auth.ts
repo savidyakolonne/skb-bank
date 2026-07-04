@@ -23,3 +23,8 @@ export interface AuthResponse {
         token: string
     };
 }
+
+export interface AuthUser {
+    email: string;
+    role: string;
+}
