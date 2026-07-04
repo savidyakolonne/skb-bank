@@ -1,12 +1,5 @@
-import './App.css'
+import AppRoutes from "./routes/AppRoutes";
 
-function App() {
-  
-  return (
-    <>
-      <div className='text-blue-700'>Hello SKB bank</div>
-    </>
-  )
+export default function App() {
+  return <AppRoutes />;
 }
-
-export default App
