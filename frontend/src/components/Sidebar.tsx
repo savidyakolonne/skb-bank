@@ -15,7 +15,7 @@ const menu = [
     },
     {
         name: "Users",
-        path: "/users"
+        path: "/profile"
     }
 ];
 

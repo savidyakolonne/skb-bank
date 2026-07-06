@@ -1,15 +1,15 @@
 import PageHeader from "../../components/PageHeader";
 
-export default function Users(){
+export default function Profile(){
     return(
         <>
             <PageHeader
-                title="Users"
+                title="My Account"
                 subtitle="Manage users"
             />
 
             <div className=" bg-white rounded-xl shadow">
-                Users Page
+                My Account
             </div>
         </>
     );

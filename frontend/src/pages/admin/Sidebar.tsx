@@ -3,19 +3,19 @@ import { NavLink } from "react-router-dom";
 const menu = [
     {
         name: "Dashboard",
-        path: "/dashboard"
+        path: "/admin/dashboard"
     },
     {
         name: "Accounts",
-        path: "/accounts"
+        path: "/admin/accounts"
     },
     {
         name: "Transactions",
-        path: "/transactions"
+        path: "/admin/transactions"
     },
     {
         name: "Users",
-        path: "/users"
+        path: "/admin/users"
     }
 ];
 
