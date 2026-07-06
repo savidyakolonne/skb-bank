@@ -11,3 +11,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+jwt:
+  secret: your-super-secret-key
+  expiration: 86400000
+
+frontend:
+  url: http://localhost:5173
