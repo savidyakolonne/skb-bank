@@ -1,16 +1,12 @@
-import PageHeader from "../../components/PageHeader";
+import { useParams } from "react-router-dom";
 
 export default function Profile(){
-    return(
-        <>
-            <PageHeader
-                title="My Account"
-                subtitle="Manage users"
-            />
 
-            <div className=" bg-white rounded-xl shadow">
-                My Account
-            </div>
-        </>
+    const { username }=useParams();
+
+    return(
+        <div>
+            <h1>{username}</h1>
+        </div>
     );
 }

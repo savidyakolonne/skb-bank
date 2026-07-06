@@ -48,7 +48,7 @@ export default function AppRoutes() {
         <Route path="/accounts/create" element={<CreateAccount />} />
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/transactions/transfer" element={<Transfer />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/acc/:username" element={<Profile />} />
       </Route>
 
       {/* Admin */}
