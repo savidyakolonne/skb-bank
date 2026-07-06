@@ -2,13 +2,12 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ProtectedRoute from "./ProtectedRoute";
-import DashboardLayout from "../layouts/DashboardLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Accounts from "../pages/accounts/Accounts";
 import CreateAccount from "../pages/accounts/CreateAccount";
 import Transactions from "../pages/transactions/Transactions";
 import Transfer from "../pages/transactions/Transfer";
-import Users from "../pages/users/Users";
+import Users from "../pages/profile/Profile";
 
 export default function AppRoutes(){
     return(
@@ -20,7 +19,7 @@ export default function AppRoutes(){
             <Route
                 element={
                     <ProtectedRoute>
-                        <DashboardLayout/>
+                        
                     </ProtectedRoute>
                 }
             >
