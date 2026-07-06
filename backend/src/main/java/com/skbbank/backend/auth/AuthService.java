@@ -44,6 +44,15 @@ public class AuthService {
         User user = new User();
 
         user.setName(request.getName());
+
+        // username generate
+        String username = request.getName()
+                .trim()
+                .toLowerCase()
+                .replaceAll("\\s+", "")
+                .replaceAll("[^a-z0-9]", "");
+        user.setUsername(username);
+
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
