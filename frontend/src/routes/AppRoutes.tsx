@@ -1,41 +1,127 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
-import ProtectedRoute from "./ProtectedRoute";
+
+// Customer Pages
 import Dashboard from "../pages/dashboard/Dashboard";
 import Accounts from "../pages/accounts/Accounts";
 import CreateAccount from "../pages/accounts/CreateAccount";
 import Transactions from "../pages/transactions/Transactions";
 import Transfer from "../pages/transactions/Transfer";
-import Users from "../pages/profile/Profile";
+import Profile from "../pages/profile/Profile";
 
-export default function AppRoutes(){
-    return(
-        <Routes>
-            <Route path="/" element={<Navigate to="/login"/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/>
+// Admin Pages
+import AdminDashboard from "../pages/admin/Dashboard";
+import AdminUsers from "../pages/admin/Users";
+import AdminAccounts from "../pages/admin/Accounts";
+import AdminTransactions from "../pages/admin/Transactions";
+import Reports from "../pages/admin/Reports";
 
-            <Route
-                element={
-                    <ProtectedRoute>
-                        
-                    </ProtectedRoute>
-                }
-            >
-                <Route path="/dashboard" element={<Dashboard/>}/>
+import ProtectedRoute from "./ProtectedRoute";
+import AdminRoute from "../routes/AdminRoute";
 
-                <Route path="/accounts" element={<Accounts/>}/>
-                <Route path="/accounts/create" element={<CreateAccount/>}/>
-                
-                <Route path="/transactions" element={<Transactions/>}/>
-                <Route path="/transactions/transfer" element={<Transfer/>}/>
+import DashboardLayout from "../layouts/DashboardLayout";
+import AdminLayout from "../layouts/AdminLayout";
 
-                <Route path="/users" element={<Users/>}/>
-            </Route>
+export default function AppRoutes() {
+  return (
+    <Routes>
 
-            <Route path="*" element={<Navigate to="/login" replace/>}/>
+      {/* Public */}
 
-        </Routes>
-    );
+      <Route path="/" element={<Navigate to="/login" replace />} />
+
+      <Route path="/login" element={<Login />} />
+
+      <Route path="/register" element={<Register />} />
+
+      {/* Customer */}
+
+      <Route
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
+        />
+
+        <Route
+          path="/accounts"
+          element={<Accounts />}
+        />
+
+        <Route
+          path="/accounts/create"
+          element={<CreateAccount />}
+        />
+
+        <Route
+          path="/transactions"
+          element={<Transactions />}
+        />
+
+        <Route
+          path="/transactions/transfer"
+          element={<Transfer />}
+        />
+
+        <Route
+          path="/profile"
+          element={<Profile />}
+        />
+      </Route>
+
+      {/* Admin */}
+
+      <Route
+        path="/admin"
+        element={
+          <AdminRoute>
+            <AdminLayout />
+          </AdminRoute>
+        }
+      >
+        <Route
+          index
+          element={<Navigate to="dashboard" replace />}
+        />
+
+        <Route
+          path="dashboard"
+          element={<AdminDashboard />}
+        />
+
+        <Route
+          path="users"
+          element={<AdminUsers />}
+        />
+
+        <Route
+          path="accounts"
+          element={<AdminAccounts />}
+        />
+
+        <Route
+          path="transactions"
+          element={<AdminTransactions />}
+        />
+
+        <Route
+          path="reports"
+          element={<Reports />}
+        />
+      </Route>
+
+      <Route
+        path="*"
+        element={<Navigate to="/login" replace />}
+      />
+
+    </Routes>
+  );
 }
