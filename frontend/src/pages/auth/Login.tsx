@@ -29,19 +29,24 @@ export default function Login(){
     });
 
     const onSubmit = async (data: LoginRequest) => {
-        try{
+        try {
             setLoading(true);
 
-            await login(data);
+            const loggedUser = await login(data);
 
             toast.success("Login successful!");
 
+            if (loggedUser.role === "ADMIN") {
+            navigate("/admin/dashboard");
+            } else {
             navigate("/dashboard");
-        } catch (error: any){
+            }
+
+        } catch (error: any) {
             toast.error(
-                error?.response?.data?.message || "Login failed"
+            error?.response?.data?.message || "Login failed"
             );
-        }finally{
+        } finally {
             setLoading(false);
         }
     };

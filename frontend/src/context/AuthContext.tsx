@@ -7,16 +7,19 @@ import {
 } from "react";
 
 import type {
-    LoginRequest,
-    RegisterRequest,
+  LoginRequest,
+  RegisterRequest,
+  User,
 } from "../types/auth";
 
 import authService from "../services/AuthService";
 
 interface AuthContextType {
   token: string | null;
+  user: User | null;
   isAuthenticated: boolean;
-  login: (data: LoginRequest) => Promise<void>;
+
+  login: (data: LoginRequest) => Promise<User>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => void;
 }
@@ -29,21 +32,31 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const savedToken = authService.getToken();
+    const savedUser = authService.getUser();
 
     if (savedToken) {
       setToken(savedToken);
     }
+
+    if (savedUser) {
+      setUser(savedUser);
+    }
   }, []);
 
-  const login = async (data: LoginRequest) => {
+  const login = async (data: LoginRequest): Promise<User> => {
     const response = await authService.login(data);
 
     authService.saveToken(response.data.token);
+    authService.saveUser(response.data.user);
 
     setToken(response.data.token);
+    setUser(response.data.user);
+
+    return response.data.user;
   };
 
   const register = async (data: RegisterRequest) => {
@@ -52,13 +65,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = () => {
     authService.logout();
+
     setToken(null);
+    setUser(null);
   };
 
   return (
     <AuthContext.Provider
       value={{
         token,
+        user,
         isAuthenticated: !!token,
         login,
         register,
