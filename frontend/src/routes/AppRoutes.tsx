@@ -31,9 +31,7 @@ export default function AppRoutes() {
       {/* Public */}
 
       <Route path="/" element={<Navigate to="/login" replace />} />
-
       <Route path="/login" element={<Login />} />
-
       <Route path="/register" element={<Register />} />
 
       {/* Customer */}
@@ -45,35 +43,12 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       >
-        <Route
-          path="/dashboard"
-          element={<Dashboard />}
-        />
-
-        <Route
-          path="/accounts"
-          element={<Accounts />}
-        />
-
-        <Route
-          path="/accounts/create"
-          element={<CreateAccount />}
-        />
-
-        <Route
-          path="/transactions"
-          element={<Transactions />}
-        />
-
-        <Route
-          path="/transactions/transfer"
-          element={<Transfer />}
-        />
-
-        <Route
-          path="/profile"
-          element={<Profile />}
-        />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/accounts" element={<Accounts />}/>
+        <Route path="/accounts/create" element={<CreateAccount />} />
+        <Route path="/transactions" element={<Transactions />} />
+        <Route path="/transactions/transfer" element={<Transfer />} />
+        <Route path="/acc/:username" element={<Profile />} />
       </Route>
 
       {/* Admin */}
@@ -86,35 +61,12 @@ export default function AppRoutes() {
           </AdminRoute>
         }
       >
-        <Route
-          index
-          element={<Navigate to="dashboard" replace />}
-        />
-
-        <Route
-          path="dashboard"
-          element={<AdminDashboard />}
-        />
-
-        <Route
-          path="users"
-          element={<AdminUsers />}
-        />
-
-        <Route
-          path="accounts"
-          element={<AdminAccounts />}
-        />
-
-        <Route
-          path="transactions"
-          element={<AdminTransactions />}
-        />
-
-        <Route
-          path="reports"
-          element={<Reports />}
-        />
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="users" element={<AdminUsers />} />
+        <Route path="accounts" element={<AdminAccounts />} />
+        <Route path="transactions" element={<AdminTransactions />} />
+        <Route path="reports" element={<Reports />} />
       </Route>
 
       <Route

@@ -12,6 +12,7 @@ export interface RegisterRequest {
 export interface User {
     id: number;
     name: string;
+    username: string;
     email: string;
     role: "USER" | "ADMIN";
 }
