@@ -74,6 +74,10 @@ public class AccountService {
 
         accountValidator.validateDeposit(amount);
 
+        account.setBalance(
+                account.getBalance().add(amount)
+        );
+
         Account updatedAccount = accountRepository.save(account);
 
         return accountMapper.toResponse(updatedAccount);
@@ -90,7 +94,11 @@ public class AccountService {
 
         accountValidator.validateWithdraw(account, amount);
 
-        Account updatedAccount =  accountRepository.save(account);
+        account.setBalance(
+                account.getBalance().subtract(amount)
+        );
+
+        Account updatedAccount = accountRepository.save(account);
 
         return accountMapper.toResponse(updatedAccount);
     }

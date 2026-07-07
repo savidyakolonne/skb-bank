@@ -12,6 +12,10 @@ public class AccountResponse {
 
     private Long id;
 
+    private String ownername;
+
+    private String username;
+
     private String accountNumber;
 
     private AccountType accountType;
