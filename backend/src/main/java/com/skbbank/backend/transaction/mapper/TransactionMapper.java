@@ -17,7 +17,7 @@ public class TransactionMapper {
                 transaction.getAccount().getUser().getName()
         );
         response.setUsername(
-                transaction.getAccount().getUser().getName()
+                transaction.getAccount().getUser().getUsername()
         );
         response.setAccountNumber(transaction.getAccount().getAccountNumber());
         response.setAmount(transaction.getAmount());

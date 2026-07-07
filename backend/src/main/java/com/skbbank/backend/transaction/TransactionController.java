@@ -77,6 +77,22 @@ public class TransactionController {
         );
     }
 
+    // get transactions by user
+    @Operation(summary = "Get transactions by user")
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/user/{userId}")
+    public ApiResponse<List<TransactionResponse>> getTransactionsByUser(
+            @PathVariable Long userId
+    ) {
+
+        return new ApiResponse<>(
+                true,
+                "User transactions retrieved successfully",
+                transactionService.getTransactionsByUser(userId)
+        );
+
+    }
+
     // transfer money
     @Operation(summary = "Transfer money")
     @PreAuthorize("hasRole('USER')")
