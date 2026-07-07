@@ -1,93 +1,106 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-import PageHeader from "../../components/PageHeader";
-
-import accountService from "../../services/accountService";
+import AccountService from "../../services/accountService";
 
 import type { Account } from "../../types/Account";
 
 export default function Accounts() {
-  const [accounts, setAccounts] = useState<Account[]>([]);
 
-  useEffect(() => {
-    loadAccounts();
-  }, []);
+    const [accounts,setAccounts]=
+        useState<Account[]>([]);
 
-  async function loadAccounts() {
-    try {
-      const data = await accountService.getAll();
-      setAccounts(data);
-    } catch (err) {
-      console.error(err);
+    useEffect(()=>{
+
+        loadAccounts();
+
+    },[]);
+
+    async function loadAccounts(){
+
+        const data =
+            await AccountService.getAll();
+
+        setAccounts(data);
+
     }
-  }
 
-  return (
-    <>
-      <PageHeader
-        title="Accounts"
-        subtitle="Manage bank accounts"
-      />
+    return(
 
-      <div className="bg-white rounded-xl shadow">
+        <div>
 
-        <table className="w-full">
+            <div className="flex justify-between items-center mb-6">
 
-          <thead>
+                <h1 className="text-3xl font-bold">
 
-            <tr className="border-b">
+                    Accounts
 
-              <th className="text-left p-4">
-                Number
-              </th>
+                </h1>
 
-              <th className="text-left p-4">
-                Type
-              </th>
+                <Link
 
-              <th className="text-left p-4">
-                Balance
-              </th>
+                    to="/accounts/create"
 
-              <th className="text-left p-4">
-                Status
-              </th>
+                    className="bg-blue-600 text-white px-4 py-2 rounded"
 
-            </tr>
+                >
 
-          </thead>
+                    Create Account
 
-          <tbody>
+                </Link>
 
-            {accounts.map((account) => (
+            </div>
 
-              <tr key={account.id}>
+            <div className="grid md:grid-cols-2 gap-5">
 
-                <td className="p-4">
-                  {account.accountNumber}
-                </td>
+                {accounts.map(account=>(
 
-                <td className="p-4">
-                  {account.accountType}
-                </td>
+                    <div
 
-                <td className="p-4">
-                  Rs. {account.balance}
-                </td>
+                        key={account.id}
 
-                <td className="p-4">
-                  {account.status}
-                </td>
+                        className="border rounded-xl p-5 bg-white shadow"
 
-              </tr>
+                    >
 
-            ))}
+                        <h2 className="font-bold text-xl">
 
-          </tbody>
+                            {account.accountType}
 
-        </table>
+                        </h2>
 
-      </div>
-    </>
-  );
+                        <p>
+
+                            {account.accountNumber}
+
+                        </p>
+
+                        <p>
+
+                            Rs. {account.balance}
+
+                        </p>
+
+                        <p>
+
+                            {account.status}
+
+                        </p>
+
+                        <p>
+
+                            {account.ownerName}
+
+                        </p>
+
+                    </div>
+
+                ))}
+
+            </div>
+
+        </div>
+
+    );
+
 }
