@@ -34,93 +34,86 @@ public class AccountController {
     @PostMapping
     public ApiResponse<AccountResponse> createAccount(
             @Valid @RequestBody CreateAccountRequest request
-            ) {
-        AccountResponse account = accountService.createAccount(
-                request.getUserId(),
-                request.getAccountType()
-        );
+    ) {
 
         return new ApiResponse<>(
                 true,
                 "Account created successfully",
-                account
+                accountService.createAccount(
+                        request.getUserId(),
+                        request.getAccountType()
+                )
         );
     }
 
     @Operation(summary = "Get all accounts")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping
-    public  ApiResponse<List<AccountResponse>> getAllAccounts() {
-
-        List<AccountResponse> accounts = accountService.getAllAccounts();
+    public ApiResponse<List<AccountResponse>> getAllAccounts() {
 
         return new ApiResponse<>(
                 true,
                 "Accounts retrieved successfully",
-                accounts
+                accountService.getAllAccounts()
         );
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @Operation(summary = "Get account by id")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{id}")
-    public AccountResponse getAccountById(@PathVariable Long id) {
-        AccountResponse account = accountService.getAccountById(id);
+    public ApiResponse<AccountResponse> getAccountById(
+            @PathVariable Long id
+    ) {
 
         return new ApiResponse<>(
                 true,
                 "Account retrieved successfully",
-                account
-        ).getData();
+                accountService.getAccountById(id)
+        );
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @Operation(summary = "Get accounts by user")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/user/{userId}")
-    public List<AccountResponse> getAccountsByUser(
+    public ApiResponse<List<AccountResponse>> getAccountsByUser(
             @PathVariable Long userId
     ) {
-        List<AccountResponse> accounts =
-                accountService.getAccountsByUser(userId);
 
         return new ApiResponse<>(
                 true,
                 "User accounts retrieved successfully",
-                accounts
-        ).getData();
+                accountService.getAccountsByUser(userId)
+        );
     }
 
     @Operation(summary = "Deposit money")
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/{id}/deposit")
-    public AccountResponse deposit(
+    public ApiResponse<AccountResponse> deposit(
             @PathVariable Long id,
             @Valid @RequestBody DepositRequest request
-            ) {
-
-        AccountResponse account =
-                accountService.deposit(id, request.getAmount());
+    ) {
 
         return new ApiResponse<>(
                 true,
-                "Deposit successfully",
-                account
-        ).getData();
+                "Deposit successful",
+                accountService.deposit(id, request.getAmount())
+        );
     }
 
     @Operation(summary = "Withdraw money")
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/{id}/withdraw")
-    public AccountResponse withdraw(
+    public ApiResponse<AccountResponse> withdraw(
             @PathVariable Long id,
             @Valid @RequestBody WithdrawRequest request
-            ) {
-        AccountResponse account =
-                accountService.withdraw(id, request.getAmount());
+    ) {
 
         return new ApiResponse<>(
                 true,
                 "Withdrawal successful",
-                account
-        ).getData();
+                accountService.withdraw(id, request.getAmount())
+        );
     }
 
 }

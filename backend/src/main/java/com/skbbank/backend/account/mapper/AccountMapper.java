@@ -16,7 +16,12 @@ public class AccountMapper {
         response.setAccountType(account.getAccountType());
         response.setBalance(account.getBalance());
         response.setStatus(account.getStatus());
-        response.setCreatedAt(account.getCreatedAt());
+        response.setOwnername(
+                account.getUser().getName()
+        );
+        response.setUsername(
+                account.getUser().getUsername()
+        );
 
         return response;
 
