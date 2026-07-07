@@ -13,6 +13,12 @@ public class TransactionMapper {
 
         response.setId(transaction.getId());
         response.setAccountId(transaction.getAccount().getId());
+        response.setOwnerName(
+                transaction.getAccount().getUser().getName()
+        );
+        response.setUsername(
+                transaction.getAccount().getUser().getName()
+        );
         response.setAccountNumber(transaction.getAccount().getAccountNumber());
         response.setAmount(transaction.getAmount());
         response.setTransactionType(transaction.getTransactionType());

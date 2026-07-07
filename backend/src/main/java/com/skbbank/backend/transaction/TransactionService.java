@@ -66,10 +66,10 @@ public class TransactionService {
     @Transactional
     public TransactionResponse transferMoney(TransferRequest request) {
 
-        Account sender = accountRepository.findById(request.getSenderAccountId())
+        Account sender = accountRepository.findById(request.getFromAccountId())
                 .orElseThrow(AccountNotFoundException::new);
 
-        Account receiver = accountRepository.findById(request.getReceiverAccountId())
+        Account receiver = accountRepository.findById(request.getToAccountId())
                 .orElseThrow(AccountNotFoundException::new);
 
         transactionValidator.validateTransfer(
@@ -83,6 +83,8 @@ public class TransactionService {
 
         accountRepository.save(sender);
         accountRepository.save(receiver);
+
+        transactionRepository.flush();
 
         Transaction senderTransaction = createTransaction(
                 sender,
