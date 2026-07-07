@@ -62,6 +62,16 @@ public class TransactionService {
                 .toList();
     }
 
+    // Get transactions by user
+    public List<TransactionResponse> getTransactionsByUser(Long userId) {
+
+        return transactionRepository.findByAccountUserId(userId)
+                .stream()
+                .map(transactionMapper::toResponse)
+                .toList();
+
+    }
+
     // Transfer money
     @Transactional
     public TransactionResponse transferMoney(TransferRequest request) {

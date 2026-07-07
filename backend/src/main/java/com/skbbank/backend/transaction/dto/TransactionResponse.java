@@ -10,20 +10,14 @@ import java.time.LocalDateTime;
 public class TransactionResponse {
 
     private Long id;
-
     private Long accountId;
-
-    private String ownerName;
-
-    private String username;
-
     private String accountNumber;
 
+    private String ownerName;
+    private String username;
+
     private BigDecimal amount;
-
     private TransactionType transactionType;
-
     private String description;
-
     private LocalDateTime createdAt;
 }
