@@ -1,5 +1,6 @@
 package com.skbbank.backend.transaction.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
@@ -12,8 +13,8 @@ public class TransferRequest {
     @NotNull(message = "Sender account ID is required")
     private Long fromAccountId;
 
-    @NotNull(message = "Receiver account ID is required")
-    private Long toAccountId;
+    @NotBlank(message = "Receiver account ID is required")
+    private String toAccountNumber;
 
     @NotNull(message = "Transfer amount is required")
     @Positive(message = "Transfer amount must be greater then zero")

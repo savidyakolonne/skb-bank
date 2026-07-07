@@ -79,7 +79,10 @@ public class TransactionService {
         Account sender = accountRepository.findById(request.getFromAccountId())
                 .orElseThrow(AccountNotFoundException::new);
 
-        Account receiver = accountRepository.findById(request.getToAccountId())
+        Account receiver = accountRepository
+                .findByAccountNumber(
+                        request.getToAccountNumber()
+                )
                 .orElseThrow(AccountNotFoundException::new);
 
         transactionValidator.validateTransfer(
