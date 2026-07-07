@@ -21,7 +21,7 @@ export interface Transaction {
 
 export interface TransferRequest {
   fromAccountId: number;
-  toAccountId: number;
+  toAccountNumber: string;
   amount: number;
   description: string;
 }
