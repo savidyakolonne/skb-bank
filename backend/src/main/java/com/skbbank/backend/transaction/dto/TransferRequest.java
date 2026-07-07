@@ -10,10 +10,10 @@ import java.math.BigDecimal;
 public class TransferRequest {
 
     @NotNull(message = "Sender account ID is required")
-    private Long senderAccountId;
+    private Long fromAccountId;
 
     @NotNull(message = "Receiver account ID is required")
-    private Long receiverAccountId;
+    private Long toAccountId;
 
     @NotNull(message = "Transfer amount is required")
     @Positive(message = "Transfer amount must be greater then zero")

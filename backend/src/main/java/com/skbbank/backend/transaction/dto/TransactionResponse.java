@@ -13,6 +13,10 @@ public class TransactionResponse {
 
     private Long accountId;
 
+    private String ownerName;
+
+    private String username;
+
     private String accountNumber;
 
     private BigDecimal amount;

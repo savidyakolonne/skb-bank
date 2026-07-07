@@ -12,7 +12,7 @@ public class AccountResponse {
 
     private Long id;
 
-    private String ownername;
+    private String ownerName;
 
     private String username;
 
