@@ -110,14 +110,8 @@ npm run dev
 
 ---
 
-## 🌐 Case Study
+## Case Study
 
 Read the complete case study, architecture, development process, and design decisions here:
 
 ### 👉 **https://savidyakolonne.me/work/skbbank**
-
----
-
-## 📄 License
-
-This project is developed for learning, portfolio, and demonstration purposes.
