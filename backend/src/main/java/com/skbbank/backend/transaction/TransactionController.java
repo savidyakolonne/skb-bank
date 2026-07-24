@@ -3,11 +3,13 @@ package com.skbbank.backend.transaction;
 import com.skbbank.backend.common.response.ApiResponse;
 import com.skbbank.backend.transaction.dto.TransactionResponse;
 import com.skbbank.backend.transaction.dto.TransferRequest;
+import com.skbbank.backend.common.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -91,6 +93,26 @@ public class TransactionController {
                 transactionService.getTransactionsByUser(userId)
         );
 
+    }
+
+    // get customer's transactions
+    @Operation(summary = "Get my transactions")
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/my")
+    public ApiResponse<List<TransactionResponse>> getMyTransactions(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+
+        List<TransactionResponse> transactions =
+                transactionService.getTransactionsByUser(
+                        userDetails.getUser().getId()
+                );
+
+        return new ApiResponse<>(
+                true,
+                "My transactions retrieved successfully",
+                transactions
+        );
     }
 
     // transfer money
