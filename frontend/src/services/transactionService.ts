@@ -27,6 +27,12 @@ class TransactionService {
 
     return response.data.data as Transaction[];
   }
+  
+  // transactions (customer's)
+  async getMyTransactions(){
+    const response = await api.get("/transactions/my");
+    return response.data.data as Transaction[];
+  }
 
   async transfer(data: TransferRequest) {
     const response = await api.post(

@@ -3,13 +3,9 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import TransactionService from "../../services/transactionService";
-import AccountService from "../../services/accountService";
-import { useAuthContext } from "../../context/AuthContext";
 import type { Transaction } from "../../types/Transaction";
 
 export default function Transactions() {
-
-    const { user } = useAuthContext();
 
     const navigate = useNavigate();
 
@@ -22,35 +18,22 @@ export default function Transactions() {
 
     async function loadTransactions() {
 
-        if (!user) return;
-
         try {
+
             setLoading(true);
 
-            // Step 1: get the user's accounts
-            const accounts = await AccountService.getByUser(user.id);
+            const data = await TransactionService.getMyTransactions();
 
-            // Step 2: fetch transactions for each account
-            const allResults = await Promise.all(
-                accounts.map(account =>
-                    TransactionService.getByAccount(account.id)
-                )
-            );
-
-            // Step 3: flatten + sort by date descending
-            const merged = allResults
-                .flat()
-                .sort((a, b) =>
-                    new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime()
-                );
-
-            setTransactions(merged);
+            setTransactions(data);
 
         } catch {
+
             toast.error("Failed to load transactions");
+
         } finally {
+
             setLoading(false);
+
         }
 
     }
@@ -58,60 +41,86 @@ export default function Transactions() {
     if (loading) {
         return (
             <div className="flex justify-center items-center py-20">
-                <p className="text-gray-500">Loading transactions...</p>
+                <p className="text-gray-500 text-lg">
+                    Loading transactions...
+                </p>
             </div>
         );
     }
 
     return (
 
-        <div>
+        <div className="space-y-6">
 
-            <div className="flex justify-between items-center mb-6">
+            {/* Header */}
+
+            <div className="flex justify-between items-center">
 
                 <h1 className="text-3xl font-bold">
-                    Transactions
+                    My Transactions
                 </h1>
 
                 <button
                     onClick={() => navigate("/transactions/transfer")}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg transition"
                 >
                     + Transfer Money
                 </button>
 
             </div>
 
+            {/* Empty State */}
+
             {transactions.length === 0 ? (
 
-                <p className="text-gray-500">No transactions found.</p>
+                <div className="bg-white rounded-xl shadow p-8 text-center">
+
+                    <p className="text-gray-500">
+                        No transactions found.
+                    </p>
+
+                </div>
 
             ) : (
 
                 <div className="space-y-4">
 
-                    {transactions.map(transaction => (
+                    {transactions.map((transaction) => (
 
                         <div
                             key={transaction.id}
-                            className="bg-white rounded-lg shadow p-5"
+                            className="bg-white rounded-xl shadow p-5 flex justify-between items-center"
                         >
 
-                            <h2 className="font-bold">
-                                {transaction.transactionType}
-                            </h2>
+                            <div>
 
-                            <p>{transaction.accountNumber}</p>
+                                <h2 className="font-semibold text-lg">
+                                    {transaction.transactionType.replace("_", " ")}
+                                </h2>
 
-                            <p>Rs. {transaction.amount}</p>
+                                <p className="text-gray-500 text-sm">
+                                    {transaction.accountNumber}
+                                </p>
 
-                            <p>{transaction.description}</p>
+                                <p className="text-gray-500 text-sm">
+                                    {transaction.description || "No description"}
+                                </p>
 
-                            <p>
-                                {new Date(
-                                    transaction.createdAt
-                                ).toLocaleString()}
-                            </p>
+                                <p className="text-xs text-gray-400 mt-2">
+                                    {new Date(transaction.createdAt).toLocaleString()}
+                                </p>
+
+                            </div>
+
+                            <div
+                                className={`text-xl font-bold ${
+                                    transaction.transactionType.includes("IN")
+                                        ? "text-green-600"
+                                        : "text-red-600"
+                                }`}
+                            >
+                                Rs. {Number(transaction.amount).toLocaleString()}
+                            </div>
 
                         </div>
 
