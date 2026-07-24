@@ -1,9 +1,33 @@
 import { Link } from "react-router-dom";
 import { ArrowRightLeft } from "lucide-react";
+
 import { useAuth } from "../../hooks/useAuth";
+import DashboardService from "../../services/DashboardService";
+import type { Dashboard as DashboardType } from "../../types/Dashboard";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
+
   const { user } = useAuth();
+
+  const [dashboard, setDashboard] = useState<DashboardType | null>(null);
+
+  useEffect(() => {
+
+    const loadDashboard = async () => {
+      try {
+
+        const data = await DashboardService.getDashboard();
+        setDashboard(data);
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    loadDashboard();
+
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-100 p-8">
@@ -25,7 +49,7 @@ export default function Dashboard() {
         </p>
 
         <h2 className="text-5xl font-bold mt-2">
-          Rs. 125,000.00
+          Rs.{dashboard?.totalBalance?.toLocaleString() ?? "0.00"}
         </h2>
 
       </div>
@@ -55,37 +79,28 @@ export default function Dashboard() {
 
           <div className="space-y-4">
 
-            <div className="border rounded-xl p-5">
+            {dashboard?.accounts.map((account) => (
 
-              <p className="font-semibold">
-                Savings Account
-              </p>
+              <div
+                key={account.id}
+                className="border rounded-xl p-5"
+              >
 
-              <p className="text-sm text-gray-500 mt-1">
-                SKB337829413
-              </p>
+                <p className="font-semibold">
+                  {account.accountType} Account
+                </p>
 
-              <h3 className="text-2xl font-bold mt-4">
-                Rs. 75,000.00
-              </h3>
+                <p className="text-sm text-gray-500 mt-1">
+                  {account.accountNumber}
+                </p>
 
-            </div>
+                <h3 className="text-2xl font-bold mt-4">
+                  Rs. {Number(account.balance).toLocaleString()}
+                </h3>
 
-            <div className="border rounded-xl p-5">
+              </div>
 
-              <p className="font-semibold">
-                Current Account
-              </p>
-
-              <p className="text-sm text-gray-500 mt-1">
-                SKB238921834
-              </p>
-
-              <h3 className="text-2xl font-bold mt-4">
-                Rs. 50,000.00
-              </h3>
-
-            </div>
+            ))}
 
           </div>
 
@@ -112,65 +127,38 @@ export default function Dashboard() {
 
           <div className="space-y-5">
 
-            <div className="flex justify-between border-b pb-4">
+            {dashboard?.recentTransactions.map((transaction) => (
 
-              <div>
+              <div
+                key={transaction.id}
+                className="flex justify-between border-b pb-4"
+              >
 
-                <p className="font-medium">
-                  Transfer to John Doe
-                </p>
+                <div>
 
-                <p className="text-sm text-gray-500">
-                  Today
-                </p>
+                  <p className="font-medium">
+                    {transaction.transactionType.replace("_", " ")}
+                  </p>
 
-              </div>
+                  <p className="text-sm text-gray-500">
+                    {new Date(transaction.createdAt).toLocaleDateString()}
+                  </p>
 
-              <p className="text-red-600 font-semibold">
-                - Rs. 2,000
-              </p>
+                </div>
 
-            </div>
-
-            <div className="flex justify-between border-b pb-4">
-
-              <div>
-
-                <p className="font-medium">
-                  Salary Credit
-                </p>
-
-                <p className="text-sm text-gray-500">
-                  Yesterday
+                <p
+                  className={`font-semibold ${
+                    transaction.transactionType.includes("IN")
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  Rs. {Number(transaction.amount).toLocaleString()}
                 </p>
 
               </div>
 
-              <p className="text-green-600 font-semibold">
-                + Rs. 45,000
-              </p>
-
-            </div>
-
-            <div className="flex justify-between">
-
-              <div>
-
-                <p className="font-medium">
-                  Card Payment
-                </p>
-
-                <p className="text-sm text-gray-500">
-                  2 Days Ago
-                </p>
-
-              </div>
-
-              <p className="text-red-600 font-semibold">
-                - Rs. 4,500
-              </p>
-
-            </div>
+            ))}
 
           </div>
 
