@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import logo from "../assets/logo.png";
 
 export default function Navbar(){
     const navigate = useNavigate();
@@ -12,9 +13,12 @@ export default function Navbar(){
 
     return(
         <header className=" h-16 bg-white shadow flex items-center justify-between px-8">
-            <h1 className="text-2xl font-bold text-blue-600"> 
-                SKB Bank
-            </h1>
+           
+           <img 
+            src={logo} 
+            alt="logo" 
+            width={150}
+           />
 
             <button
                 onClick={handleLogout}
