@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import UserService from "../../services/userService";
 import type { User } from "../../types/auth";
 
@@ -6,6 +6,7 @@ export default function Users() {
 
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
         loadUsers();
@@ -31,17 +32,57 @@ export default function Users() {
 
     }
 
+    const filteredUsers = useMemo(() => {
+
+        return users.filter(user =>
+
+            user.name.toLowerCase().includes(search.toLowerCase()) ||
+
+            user.email.toLowerCase().includes(search.toLowerCase()) ||
+
+            user.username.toLowerCase().includes(search.toLowerCase())
+
+        );
+
+    }, [users, search]);
+
     if (loading) {
-        return <div>Loading...</div>;
+
+        return (
+            <div className="p-8">
+                Loading users...
+            </div>
+        );
+
     }
 
     return (
 
         <div className="space-y-6">
 
-            <h1 className="text-3xl font-bold">
-                Users
-            </h1>
+            <div className="flex justify-between items-center">
+
+                <div>
+
+                    <h1 className="text-3xl font-bold">
+                        User Management
+                    </h1>
+
+                    <p className="text-gray-500">
+                        Total Users: {users.length}
+                    </p>
+
+                </div>
+
+                <input
+                    type="text"
+                    placeholder="Search users..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="border rounded-lg px-4 py-2 w-72"
+                />
+
+            </div>
 
             <div className="bg-white rounded-xl shadow overflow-hidden">
 
@@ -51,13 +92,13 @@ export default function Users() {
 
                         <tr>
 
-                            <th className="p-4 text-left">Name</th>
+                            <th className="text-left p-4">Name</th>
 
-                            <th className="p-4 text-left">Username</th>
+                            <th className="text-left p-4">Username</th>
 
-                            <th className="p-4 text-left">Email</th>
+                            <th className="text-left p-4">Email</th>
 
-                            <th className="p-4 text-left">Role</th>
+                            <th className="text-left p-4">Role</th>
 
                         </tr>
 
@@ -65,42 +106,59 @@ export default function Users() {
 
                     <tbody>
 
-                        {users.map((user) => (
+                        {filteredUsers.length === 0 ? (
 
-                            <tr
-                                key={user.id}
-                                className="border-b hover:bg-gray-50"
-                            >
+                            <tr>
 
-                                <td className="p-4">
-                                    {user.name}
-                                </td>
-
-                                <td className="p-4">
-                                    {user.username}
-                                </td>
-
-                                <td className="p-4">
-                                    {user.email}
-                                </td>
-
-                                <td className="p-4">
-
-                                    <span
-                                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                            user.role === "ADMIN"
-                                                ? "bg-red-100 text-red-700"
-                                                : "bg-green-100 text-green-700"
-                                        }`}
-                                    >
-                                        {user.role}
-                                    </span>
-
+                                <td
+                                    colSpan={4}
+                                    className="text-center py-10"
+                                >
+                                    No users found.
                                 </td>
 
                             </tr>
 
-                        ))}
+                        ) : (
+
+                            filteredUsers.map(user => (
+
+                                <tr
+                                    key={user.id}
+                                    className="border-t hover:bg-gray-50"
+                                >
+
+                                    <td className="p-4">
+                                        {user.name}
+                                    </td>
+
+                                    <td className="p-4">
+                                        {user.username}
+                                    </td>
+
+                                    <td className="p-4">
+                                        {user.email}
+                                    </td>
+
+                                    <td className="p-4">
+
+                                        <span
+                                            className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                                user.role === "ADMIN"
+                                                    ? "bg-red-100 text-red-700"
+                                                    : "bg-green-100 text-green-700"
+                                            }`}
+                                        >
+                                            {user.role}
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            ))
+
+                        )}
 
                     </tbody>
 
