@@ -10,6 +10,13 @@ class UserService {
 
         return response.data.data;
     }
+
+    async getDetails(id: number){
+
+        const response = await api.get(`/users/${id}/details`);
+
+        return response.data.data;
+    }
 }
 
 export default new UserService();

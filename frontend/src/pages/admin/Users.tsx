@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import UserService from "../../services/userService";
 import type { User } from "../../types/auth";
+import { Link } from "react-router-dom";
 
 export default function Users() {
 
@@ -100,6 +101,8 @@ export default function Users() {
 
                             <th className="text-left p-4">Role</th>
 
+                            <th className="text-left p-4">Actions</th>
+
                         </tr>
 
                     </thead>
@@ -151,6 +154,17 @@ export default function Users() {
                                         >
                                             {user.role}
                                         </span>
+
+                                    </td>
+
+                                    <td className="p-4">
+
+                                        <Link
+                                            to={`/admin/users/${user.id}`}
+                                            className="text-blue-600 hover:underline"
+                                        >
+                                            View
+                                        </Link>
 
                                     </td>
 

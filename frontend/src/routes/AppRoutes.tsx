@@ -17,6 +17,7 @@ import AdminUsers from "../pages/admin/Users";
 import AdminAccounts from "../pages/admin/Accounts";
 import AdminTransactions from "../pages/admin/Transactions";
 import Reports from "../pages/admin/Reports";
+import UserDetails from "../pages/admin/UserDetails";
 
 import ProtectedRoute from "./ProtectedRoute";
 import AdminRoute from "../routes/AdminRoute";
@@ -67,6 +68,7 @@ export default function AppRoutes() {
         <Route path="accounts" element={<AdminAccounts />} />
         <Route path="transactions" element={<AdminTransactions />} />
         <Route path="reports" element={<Reports />} />
+        <Route path="users/:id" element={<UserDetails/>}/>
       </Route>
 
       <Route
