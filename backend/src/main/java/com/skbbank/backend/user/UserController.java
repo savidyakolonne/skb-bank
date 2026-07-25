@@ -3,6 +3,7 @@ package com.skbbank.backend.user;
 import com.skbbank.backend.common.response.ApiResponse;
 import com.skbbank.backend.user.dto.CreateUserRequest;
 import com.skbbank.backend.user.dto.UpdateUserRequest;
+import com.skbbank.backend.user.dto.UserDetailsResponse;
 import com.skbbank.backend.user.dto.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -102,5 +103,21 @@ public class UserController {
                 "User deleted successfully",
                 null
         );
+    }
+
+    // get user details
+    @Operation(summary = "Get user details")
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}/details")
+    public ApiResponse<UserDetailsResponse> getUserDetails(
+            @PathVariable Long id
+    ){
+
+        return new ApiResponse<>(
+                true,
+                "User details retrieved successfully",
+                userService.getUserDetails(id)
+        );
+
     }
 }

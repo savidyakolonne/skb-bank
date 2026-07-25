@@ -1,9 +1,16 @@
 package com.skbbank.backend.user;
 
+import com.skbbank.backend.account.AccountRepository;
+import com.skbbank.backend.account.dto.AccountResponse;
+import com.skbbank.backend.account.mapper.AccountMapper;
 import com.skbbank.backend.common.exception.EmailAlreadyExistsException;
 import com.skbbank.backend.common.exception.UserNotFoundException;
+import com.skbbank.backend.transaction.TransactionRepository;
+import com.skbbank.backend.transaction.dto.TransactionResponse;
+import com.skbbank.backend.transaction.mapper.TransactionMapper;
 import com.skbbank.backend.user.dto.CreateUserRequest;
 import com.skbbank.backend.user.dto.UpdateUserRequest;
+import com.skbbank.backend.user.dto.UserDetailsResponse;
 import com.skbbank.backend.user.dto.UserResponse;
 import com.skbbank.backend.user.enums.Role;
 import com.skbbank.backend.user.mapper.UserMapper;
@@ -19,14 +26,28 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
+    private final AccountRepository accountRepository;
+    private final TransactionRepository transactionRepository;
+
+    private final AccountMapper accountMapper;
+    private final TransactionMapper transactionMapper;
+
     public UserService(
             UserRepository userRepository,
             UserMapper userMapper,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            AccountRepository accountRepository,
+            TransactionRepository transactionRepository,
+            AccountMapper accountMapper,
+            TransactionMapper transactionMapper
     ) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
+        this.accountMapper = accountMapper;
+        this.transactionMapper = transactionMapper;
     }
 
     // Get all users
@@ -92,4 +113,32 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
     }
+
+    // get user details
+    public UserDetailsResponse getUserDetails(Long id) {
+
+        User user = findUser(id);
+
+        List<AccountResponse> accounts =
+                accountRepository.findByUserId(id)
+                        .stream()
+                        .map(accountMapper::toResponse)
+                        .toList();
+
+        List<TransactionResponse> recentTransactions =
+                transactionRepository
+                        .findByAccountUserIdOrderByCreatedAtDesc(id)
+                        .stream()
+                        .limit(10)
+                        .map(transactionMapper::toResponse)
+                        .toList();
+
+        return new UserDetailsResponse(
+                userMapper.toResponse(user),
+                accounts,
+                recentTransactions
+        );
+
+    }
+
 }
