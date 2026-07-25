@@ -9,12 +9,17 @@ export interface RegisterRequest {
     password: string;
 }
 
+export enum Role {
+    ADMIN = "ADMIN",
+    CUSTOMER = "CUSTOMER"
+}
+
 export interface User {
     id: number;
     name: string;
     username: string;
     email: string;
-    role: "USER" | "ADMIN";
+    role: Role;
 }
 
 export interface LoginResponse {
