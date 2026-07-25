@@ -15,6 +15,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     List<Account> findByUserId(Long userId);
 
+    List<Account> findAllByOrderByCreatedAtDesc();
+
     boolean existsByAccountNumber(String accountNumber);
 
     @Query("""
