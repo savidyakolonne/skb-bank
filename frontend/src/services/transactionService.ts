@@ -12,6 +12,14 @@ class TransactionService {
     return response.data.data as Transaction[];
   }
 
+  async getById(id: number){
+    const response = await api.get(
+      `/transactions/${id}`
+    );
+
+    return response.data.data as Transaction;
+  }
+
   async getByAccount(accountId: number) {
     const response = await api.get(
       `/transactions/account/${accountId}`

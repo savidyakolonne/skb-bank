@@ -5,8 +5,12 @@ import TransactionService from "../../services/transactionService";
 import AccountService from "../../services/accountService";
 
 import type { Account } from "../../types/Account";
+import BANKS from "../../constants/bank";
+import { useNavigate } from "react-router-dom";
 
 export default function Transfer() {
+
+    const navigate = useNavigate();
 
     const [accounts, setAccounts] = useState<Account[]>([]);
 
@@ -16,7 +20,9 @@ export default function Transfer() {
 
     const [amount, setAmount] = useState("");
 
-    const [description, setDescription] = useState("");
+    const [remarks, setRemarks] = useState("");
+
+    const [destinationBank, setDestinationBank] = useState("");
 
     useEffect(() => {
         loadAccounts();
@@ -52,9 +58,11 @@ export default function Transfer() {
 
                 toAccountNumber,
 
+                destinationBank,
+
                 amount: Number(amount),
 
-                description,
+                remarks,
 
             });
 
@@ -62,8 +70,13 @@ export default function Transfer() {
 
             setFromAccountId("");
             setToAccountNumber("");
+            setDestinationBank("");
             setAmount("");
-            setDescription("");
+            setRemarks("");
+
+            navigate(
+                `/customer/receipt/${transaction.id}`
+            );
 
         } catch (err: any) {
 
@@ -148,6 +161,40 @@ export default function Transfer() {
 
                 </div>
 
+                {/* bank select */}
+                <div>
+
+                    <label className="block mb-2 font-medium">
+                        Receiver Bank
+                    </label>
+
+                    <select
+                        value={destinationBank}
+                        onChange={(e) =>
+                            setDestinationBank(e.target.value)
+                        }
+                        className="w-full border rounded-lg p-3"
+                    >
+
+                        <option value="">
+                            Select a bank
+                        </option>
+
+                        {BANKS.map((bank) => (
+
+                            <option
+                                key={bank}
+                                value={bank}
+                            >
+                                {bank}
+                            </option>
+
+                        ))}
+
+                    </select>
+
+                </div>
+
                 <div>
 
                     <label className="block mb-2 font-medium">
@@ -169,14 +216,14 @@ export default function Transfer() {
                 <div>
 
                     <label className="block mb-2 font-medium">
-                        Description
+                        Beneficiary Remarks
                     </label>
 
                     <textarea
-                        placeholder="Payment description..."
-                        value={description}
+                        placeholder="Enter remarks..."
+                        value={remarks}
                         onChange={(e) =>
-                            setDescription(e.target.value)
+                            setRemarks(e.target.value)
                         }
                         className="w-full border rounded-lg p-3"
                     />

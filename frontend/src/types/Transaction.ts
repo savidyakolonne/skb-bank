@@ -14,7 +14,9 @@ export interface Transaction {
     | "TRANSFER_IN"
     | "TRANSFER_OUT";
 
-  description: string;
+  remarks: string;
+
+  destinationBank: string;
 
   createdAt: string;
 }
@@ -22,6 +24,7 @@ export interface Transaction {
 export interface TransferRequest {
   fromAccountId: number;
   toAccountNumber: string;
+  destinationBank: string;
   amount: number;
-  description: string;
+  remarks: string;
 }
