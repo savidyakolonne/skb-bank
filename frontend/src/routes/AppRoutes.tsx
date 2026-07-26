@@ -24,6 +24,7 @@ import AdminRoute from "../routes/AdminRoute";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import AdminLayout from "../layouts/AdminLayout";
+import AccountDetails from "../pages/admin/AccountDetails";
 
 export default function AppRoutes() {
   return (
@@ -66,6 +67,7 @@ export default function AppRoutes() {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="accounts" element={<AdminAccounts />} />
+        <Route path="accounts/:id" element={<AccountDetails/>}/>
         <Route path="transactions" element={<AdminTransactions />} />
         <Route path="reports" element={<Reports />} />
         <Route path="users/:id" element={<UserDetails/>}/>

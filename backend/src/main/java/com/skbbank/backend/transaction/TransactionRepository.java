@@ -10,6 +10,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     List<Transaction> findByAccountId(Long accountId);
 
+    List<Transaction> findByAccountIdOrderByCreatedAtDesc(Long accountId);
+
     List<Transaction> findByAccountUserId(Long userId);
 
     List<Transaction> findByAccountUserIdOrderByCreatedAtDesc(Long userId);
