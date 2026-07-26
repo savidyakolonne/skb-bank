@@ -31,7 +31,10 @@ public class Transaction {
     private TransactionType transactionType;
 
     @Column(length = 255)
-    private String description;
+    private String remarks;
+
+    @Column(name = "destination_bank", length = 100)
+    private String destinationBank;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

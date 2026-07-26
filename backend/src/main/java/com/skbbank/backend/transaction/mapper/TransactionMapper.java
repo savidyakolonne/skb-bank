@@ -11,19 +11,25 @@ public class TransactionMapper {
 
         TransactionResponse response = new TransactionResponse();
 
+        // trans details
         response.setId(transaction.getId());
+        response.setTransactionType(transaction.getTransactionType());
+        response.setAmount(transaction.getAmount());
+        response.setRemarks(transaction.getRemarks());
+        response.setDestinationBank(transaction.getDestinationBank());
+        response.setCreatedAt(transaction.getCreatedAt());
+
+        // account details
         response.setAccountId(transaction.getAccount().getId());
+        response.setAccountNumber(transaction.getAccount().getAccountNumber());
+
+        // user details
         response.setOwnerName(
                 transaction.getAccount().getUser().getName()
         );
         response.setUsername(
                 transaction.getAccount().getUser().getUsername()
         );
-        response.setAccountNumber(transaction.getAccount().getAccountNumber());
-        response.setAmount(transaction.getAmount());
-        response.setTransactionType(transaction.getTransactionType());
-        response.setDescription(transaction.getDescription());
-        response.setCreatedAt(transaction.getCreatedAt());
 
         return response;
     }
