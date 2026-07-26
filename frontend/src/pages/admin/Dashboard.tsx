@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminService from "../../services/adminService";
 import type { AdminDashboard } from "../../types/AdminDashboard";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
 
@@ -101,6 +102,15 @@ export default function Dashboard() {
                         Rs. {dashboard?.totalBankBalance.toLocaleString()}
                     </h2>
 
+                </div>
+
+                <div className="flex justify-end">
+                    <Link
+                        to="/admin/analytics"
+                        className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                    >
+                        View Analytics →
+                    </Link>
                 </div>
 
             </div>
