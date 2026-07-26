@@ -13,6 +13,7 @@ import Profile from "../pages/profile/Profile";
 
 // Admin Pages
 import AdminDashboard from "../pages/admin/Dashboard";
+import Analytics from "../pages/admin/Analytics";
 import AdminUsers from "../pages/admin/Users";
 import AdminAccounts from "../pages/admin/Accounts";
 import AdminTransactions from "../pages/admin/Transactions";
@@ -66,6 +67,7 @@ export default function AppRoutes() {
       >
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="analytics" element={<Analytics/>}/>
         <Route path="users" element={<AdminUsers />} />
         <Route path="accounts" element={<AdminAccounts />} />
         <Route path="accounts/:id" element={<AccountDetails/>}/>
