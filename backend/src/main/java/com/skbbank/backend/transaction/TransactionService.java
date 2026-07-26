@@ -103,14 +103,16 @@ public class TransactionService {
                 sender,
                 TransactionType.TRANSFER_OUT,
                 request.getAmount(),
-                request.getDescription()
+                request.getRemarks(),
+                request.getDestinationBank()
         );
 
         createTransaction(
                 receiver,
                 TransactionType.TRANSFER_IN,
                 request.getAmount(),
-                request.getDescription()
+                request.getRemarks(),
+                request.getDestinationBank()
         );
 
         return transactionMapper.toResponse(senderTransaction);
@@ -120,7 +122,8 @@ public class TransactionService {
             Account account,
             TransactionType type,
             java.math.BigDecimal amount,
-            String description
+            String remarks,
+            String destinationBank
     ) {
 
         Transaction transaction = new Transaction();
@@ -128,7 +131,8 @@ public class TransactionService {
         transaction.setAccount(account);
         transaction.setTransactionType(type);
         transaction.setAmount(amount);
-        transaction.setDescription(description);
+        transaction.setRemarks(remarks);
+        transaction.setDestinationBank(destinationBank);
         transaction.setCreatedAt(LocalDateTime.now());
 
         return transactionRepository.save(transaction);

@@ -27,6 +27,7 @@ import AdminRoute from "../routes/AdminRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AdminLayout from "../layouts/AdminLayout";
 import AccountDetails from "../pages/admin/AccountDetails";
+import Receipt from "../pages/customer/Receipt";
 
 export default function AppRoutes() {
   return (
@@ -52,6 +53,7 @@ export default function AppRoutes() {
         <Route path="/accounts/create" element={<CreateAccount />} />
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/transactions/transfer" element={<Transfer />} />
+        <Route path="receipt/:id" element={<Receipt/>}/>
         <Route path="/acc/:username" element={<Profile />} />
       </Route>
 

@@ -20,5 +20,7 @@ public class TransferRequest {
     @Positive(message = "Transfer amount must be greater then zero")
     private BigDecimal amount;
 
-    private String description;
+    private String destinationBank;
+
+    private String remarks;
 }
