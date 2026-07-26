@@ -16,6 +16,7 @@ import AdminDashboard from "../pages/admin/Dashboard";
 import AdminUsers from "../pages/admin/Users";
 import AdminAccounts from "../pages/admin/Accounts";
 import AdminTransactions from "../pages/admin/Transactions";
+import TransactionDetails from "../pages/admin/TransactionDetails";
 import Reports from "../pages/admin/Reports";
 import UserDetails from "../pages/admin/UserDetails";
 
@@ -69,6 +70,7 @@ export default function AppRoutes() {
         <Route path="accounts" element={<AdminAccounts />} />
         <Route path="accounts/:id" element={<AccountDetails/>}/>
         <Route path="transactions" element={<AdminTransactions />} />
+        <Route path="transactions/:id" element={<TransactionDetails/>} />
         <Route path="reports" element={<Reports />} />
         <Route path="users/:id" element={<UserDetails/>}/>
       </Route>
