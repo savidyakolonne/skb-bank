@@ -1,6 +1,73 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import type { Analytics } from "../../types/Analytics";
+import analyticsService from "../../services/analyticsService";
+import { CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 export default function Analytics() {
+
+    const [analytics, setAnalytics] = useState<Analytics | null>(null);
+
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        loadAnalytics();
+    }, []);
+
+    async function loadAnalytics(){
+
+        try{
+            const data = 
+            await analyticsService.getDashboardAnalytics();
+
+            setAnalytics(data);
+        }finally{
+
+            setLoading(false);
+        }
+    }
+
+    if(loading){
+
+        return <div className=" p-8">
+
+            Loading analytics...
+
+        </div>
+    }
+
+    if(!analytics){
+
+        return <div className=" p-8">
+
+            No analytics available.
+            
+        </div>
+    }
+
+    // pie chart data
+    const accountStatus = [
+
+        {
+            name: "Active",
+            value: analytics.activeAccounts
+        }, 
+
+        {
+            name: "Frozen",
+            value: analytics.frozenAccounts
+        },
+        {
+            name: "Closed", 
+            value: analytics.closedAccounts
+        }
+    ];
+
+    const COLORS = [
+        "#22C55E",
+        "#FACC15",
+        "#EF4444"
+    ]
 
     return (
 
@@ -46,7 +113,7 @@ export default function Analytics() {
                         </h3>
 
                         <p className="text-4xl font-bold mt-3">
-                            125
+                            {analytics.activeAccounts}
                         </p>
 
                     </div>
@@ -58,7 +125,7 @@ export default function Analytics() {
                         </h3>
 
                         <p className="text-4xl font-bold mt-3">
-                            8
+                            {analytics.frozenAccounts}
                         </p>
 
                     </div>
@@ -70,7 +137,7 @@ export default function Analytics() {
                         </h3>
 
                         <p className="text-4xl font-bold mt-3">
-                            3
+                            {analytics.closedAccounts}
                         </p>
 
                     </div>
@@ -89,7 +156,29 @@ export default function Analytics() {
 
                 <div className="h-96 flex items-center justify-center border-2 border-dashed rounded-lg">
 
-                    Pie Chart
+                    <ResponsiveContainer width="100%" height={350}>
+                        <PieChart>
+                            <Pie
+                                data={accountStatus}
+                                dataKey="value"
+                                nameKey="name"
+                                outerRadius={120}
+                                label
+                            >
+
+                                {
+                                    accountStatus.map((entry, index) => (
+                                        <Cell
+                                            key={index}
+                                            fill={COLORS[index]}
+                                        />
+                                    ))
+                                }
+                            </Pie>
+                            <Tooltip/>
+                            <Legend/>
+                        </PieChart>
+                    </ResponsiveContainer>
 
                 </div>
 
@@ -105,75 +194,36 @@ export default function Analytics() {
 
                 <div className="h-96 flex items-center justify-center border-2 border-dashed rounded-lg">
 
-                    Line Chart
+                    <ResponsiveContainer width="100%" height={350}>
+
+                        <LineChart
+                            data={analytics.monthlyTransactions}
+                        >
+
+                            <CartesianGrid strokeDasharray="3 3" />
+
+                            <XAxis
+                                dataKey="month"
+                            />
+
+                            <YAxis />
+
+                            <Tooltip />
+
+                            <Legend />
+
+                            <Line
+                                type="monotone"
+                                dataKey="totalTransactions"
+                                stroke="#2563EB"
+                                strokeWidth={3}
+                            />
+
+                        </LineChart>
+
+                    </ResponsiveContainer>                   
 
                 </div>
-
-            </div>
-
-            {/* Bar Chart */}
-
-            <div className="bg-white rounded-xl shadow p-6">
-
-                <h2 className="text-xl font-semibold mb-6">
-                    Deposits vs Withdrawals
-                </h2>
-
-                <div className="h-96 flex items-center justify-center border-2 border-dashed rounded-lg">
-
-                    Bar Chart
-
-                </div>
-
-            </div>
-
-            {/* Top Customers */}
-
-            <div className="bg-white rounded-xl shadow p-6">
-
-                <h2 className="text-xl font-semibold mb-6">
-                    Top Customers
-                </h2>
-
-                <table className="w-full">
-
-                    <thead>
-
-                        <tr className="border-b">
-
-                            <th className="text-left py-3">
-                                Customer
-                            </th>
-
-                            <th className="text-left">
-                                Account
-                            </th>
-
-                            <th className="text-left">
-                                Balance
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        <tr className="border-b">
-
-                            <td className="py-4">
-                                Coming Soon
-                            </td>
-
-                            <td>-</td>
-
-                            <td>-</td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
 
             </div>
 

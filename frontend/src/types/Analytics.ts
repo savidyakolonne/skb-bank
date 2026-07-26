@@ -7,4 +7,10 @@ export interface Analytics {
     activeAccounts: number;
     frozenAccounts: number;
     closedAccounts: number;
+    monthlyTransactions: MonthlyTransaction[];
+}
+
+export interface MonthlyTransaction {
+    month: string;
+    totalTransactions: number;
 }
