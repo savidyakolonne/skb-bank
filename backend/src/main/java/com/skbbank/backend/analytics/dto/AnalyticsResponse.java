@@ -1,6 +1,7 @@
 package com.skbbank.backend.analytics.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class AnalyticsResponse {
 
@@ -18,6 +19,8 @@ public class AnalyticsResponse {
 
     private long closedAccounts;
 
+    private List<MonthlyTransactionResponse> monthlyTransactions;
+
     public AnalyticsResponse() {
     }
 
@@ -28,7 +31,8 @@ public class AnalyticsResponse {
             BigDecimal totalBankBalance,
             long activeAccounts,
             long frozenAccounts,
-            long closedAccounts
+            long closedAccounts,
+            List<MonthlyTransactionResponse> monthlyTransactions
     ) {
         this.totalUsers = totalUsers;
         this.totalAccounts = totalAccounts;
@@ -37,6 +41,7 @@ public class AnalyticsResponse {
         this.activeAccounts = activeAccounts;
         this.frozenAccounts = frozenAccounts;
         this.closedAccounts = closedAccounts;
+        this.monthlyTransactions = monthlyTransactions;
     }
 
     public long getTotalUsers() {
@@ -93,6 +98,14 @@ public class AnalyticsResponse {
 
     public void setClosedAccounts(long closedAccounts) {
         this.closedAccounts = closedAccounts;
+    }
+
+    public List<MonthlyTransactionResponse> getMonthlyTransactions(){
+        return monthlyTransactions;
+    }
+
+    public void setMonthlyTransactions(List<MonthlyTransactionResponse> monthlyTransactions){
+        this.monthlyTransactions = monthlyTransactions;
     }
 
 }

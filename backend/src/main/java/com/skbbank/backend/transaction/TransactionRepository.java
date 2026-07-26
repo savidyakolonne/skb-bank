@@ -1,6 +1,7 @@
 package com.skbbank.backend.transaction;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +20,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     List<Transaction> findTop5ByOrderByCreatedAtDesc();
 
     List<Transaction> findAllByOrderByCreatedAtDesc();
+
+    @Query("""
+    SELECT
+    MONTH(t.createdAt),
+    COUNT(t)
+    FROM Transaction t
+    GROUP BY MONTH(t.createdAt)
+    ORDER BY MONTH(t.createdAt)
+    """)
+    List<Object[]> getMonthlyTransactions();
 }
