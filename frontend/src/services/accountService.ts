@@ -12,6 +12,13 @@ class AccountService {
     return response.data.data as Account[];
   }
 
+  async getMyAccounts(){
+    const response = 
+      await api.get("/accounts/my");
+
+    return response.data.data;
+  }
+
   async getById(id: number) {
     const response = await api.get(`/accounts/${id}`);
     return response.data.data as Account;
