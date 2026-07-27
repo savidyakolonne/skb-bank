@@ -8,9 +8,6 @@ import lombok.Data;
 @Data
 public class CreateAccountRequest {
 
-    @NotNull(message = "User ID is required")
-    private Long userId;
-
     @NotNull(message = "Account type is required")
     private AccountType accountType;
 }

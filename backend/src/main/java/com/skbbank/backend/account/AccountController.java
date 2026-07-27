@@ -35,6 +35,7 @@ public class AccountController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ApiResponse<AccountResponse> createAccount(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @Valid @RequestBody CreateAccountRequest request
     ) {
 
@@ -42,7 +43,7 @@ public class AccountController {
                 true,
                 "Account created successfully",
                 accountService.createAccount(
-                        request.getUserId(),
+                        userDetails.getUser().getId(),
                         request.getAccountType()
                 )
         );
@@ -67,7 +68,7 @@ public class AccountController {
     }
 
     @Operation(summary = "Get all accounts")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ApiResponse<List<AccountResponse>> getAllAccounts() {
 
