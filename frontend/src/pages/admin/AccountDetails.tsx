@@ -8,6 +8,9 @@ export default function AccountDetails() {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const [amount, setAmount] = useState("");
+    const [remarks, setRemarks] = useState("");
+
     const [details, setDetails] = useState<AccountDetails | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -32,6 +35,70 @@ export default function AccountDetails() {
         } finally {
 
             setLoading(false);
+
+        }
+
+    }
+
+    // deposit
+    async function deposit(){
+        if(!id) return;
+
+        if(!amount || Number(amount) <= 0){
+            alert("Enter a valid amount");
+            return;
+        }
+
+        try{
+            await AdminAccountService.deposit(
+
+                Number(id),
+                Number(amount),
+                remarks
+            );
+
+            setAmount("");
+            setRemarks("");
+            
+            loadAccount();
+
+            alert("Cash deposited successfully");
+
+        }catch (error){
+            console.error(error);
+            alert("Deposit failed");
+        }
+    }
+
+    // withdraw
+    async function withdraw() {
+
+        if (!id) return;
+
+        if (!amount || Number(amount) <= 0) {
+            alert("Enter a valid amount.");
+            return;
+        }
+
+        try {
+
+            await AdminAccountService.withdraw(
+                Number(id),
+                Number(amount),
+                remarks
+            );
+
+            setAmount("");
+            setRemarks("");
+
+            loadAccount();
+
+            alert("Cash withdrawn successfully.");
+
+        } catch (error) {
+
+            console.error(error);
+            alert("Withdrawal failed.");
 
         }
 
@@ -165,6 +232,70 @@ export default function AccountDetails() {
                         <strong>Role</strong>
                         <p>{details.owner.role}</p>
                     </div>
+
+                </div>
+
+            </div>
+
+            {/* Cash Operations */}
+
+            <div className="bg-white rounded-xl shadow p-6">
+
+                <h2 className="text-xl font-semibold mb-6">
+                    Cash Operations
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div>
+
+                        <label className="block mb-2 font-medium">
+                            Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            placeholder="Enter amount"
+                            className="w-full border rounded-lg px-4 py-2"
+                        />
+
+                    </div>
+
+                    <div>
+
+                        <label className="block mb-2 font-medium">
+                            Remarks
+                        </label>
+
+                        <input
+                            type="text"
+                            value={remarks}
+                            onChange={(e) => setRemarks(e.target.value)}
+                            placeholder="Cash Deposit / Cash Withdrawal"
+                            className="w-full border rounded-lg px-4 py-2"
+                        />
+
+                    </div>
+
+                </div>
+
+                <div className="flex gap-4 mt-6">
+
+                    <button
+                        onClick={deposit}
+                        className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg"
+                    >
+                        Cash Deposit
+                    </button>
+
+                    <button
+                        onClick={withdraw}
+                        className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg"
+                    >
+                        Cash Withdrawal
+                    </button>
 
                 </div>
 
