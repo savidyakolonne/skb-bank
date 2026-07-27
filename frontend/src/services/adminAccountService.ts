@@ -20,6 +20,40 @@ class AdminAccountService{
         return response.data.data;
     }
 
+    // Cash Deposit
+    async deposit(
+        id: number,
+        amount: number,
+        remarks: string
+    ): Promise<void> {
+
+        await api.put(
+            `/accounts/${id}/deposit`,
+            {
+                amount,
+                remarks
+            }
+        );
+
+    }
+
+    // Cash Withdrawal
+    async withdraw(
+        id: number,
+        amount: number,
+        remarks: string
+    ): Promise<void> {
+
+        await api.put(
+            `/accounts/${id}/withdraw`,
+            {
+                amount,
+                remarks
+            }
+        );
+
+    }
+
     // Freeze account
     async freezeAccount(id: number): Promise<void> {
 

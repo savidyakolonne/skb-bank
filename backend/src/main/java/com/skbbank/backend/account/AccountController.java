@@ -108,7 +108,7 @@ public class AccountController {
     }
 
     @Operation(summary = "Deposit money")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/deposit")
     public ApiResponse<AccountResponse> deposit(
             @PathVariable Long id,
@@ -118,12 +118,13 @@ public class AccountController {
         return new ApiResponse<>(
                 true,
                 "Deposit successful",
-                accountService.deposit(id, request.getAmount())
+                accountService.deposit(
+                        id, request.getAmount(), request.getRemarks())
         );
     }
 
     @Operation(summary = "Withdraw money")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/withdraw")
     public ApiResponse<AccountResponse> withdraw(
             @PathVariable Long id,
@@ -133,7 +134,7 @@ public class AccountController {
         return new ApiResponse<>(
                 true,
                 "Withdrawal successful",
-                accountService.withdraw(id, request.getAmount())
+                accountService.withdraw(id, request.getAmount(), request.getRemarks())
         );
     }
 
