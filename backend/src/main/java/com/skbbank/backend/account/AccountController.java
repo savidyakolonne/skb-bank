@@ -118,7 +118,8 @@ public class AccountController {
         return new ApiResponse<>(
                 true,
                 "Deposit successful",
-                accountService.deposit(id, request.getAmount())
+                accountService.deposit(
+                        id, request.getAmount(), request.getRemarks())
         );
     }
 
@@ -133,7 +134,7 @@ public class AccountController {
         return new ApiResponse<>(
                 true,
                 "Withdrawal successful",
-                accountService.withdraw(id, request.getAmount())
+                accountService.withdraw(id, request.getAmount(), request.getRemarks())
         );
     }
 

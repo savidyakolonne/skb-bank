@@ -6,6 +6,9 @@ import com.skbbank.backend.common.exception.AccountNotFoundException;
 import com.skbbank.backend.common.exception.InsufficientBalanceException;
 import com.skbbank.backend.common.exception.UserNotFoundException;
 import com.skbbank.backend.common.validation.AccountValidator;
+import com.skbbank.backend.transaction.Transaction;
+import com.skbbank.backend.transaction.TransactionRepository;
+import com.skbbank.backend.transaction.enums.TransactionType;
 import com.skbbank.backend.user.User;
 import com.skbbank.backend.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -25,17 +28,20 @@ public class AccountService {
     private final UserRepository userRepository;
     private final AccountMapper accountMapper;
     private final AccountValidator accountValidator;
+    private final TransactionRepository transactionRepository;
 
     public AccountService(
             AccountRepository accountRepository,
             UserRepository userRepository,
             AccountMapper accountMapper,
-            AccountValidator accountValidator
-    ){
-        this.accountRepository = accountRepository;
-        this.userRepository = userRepository;
-        this.accountMapper = accountMapper;
-        this.accountValidator = accountValidator;
+            AccountValidator accountValidator,
+            TransactionRepository transactionRepository
+){
+            this.accountRepository = accountRepository;
+            this.userRepository = userRepository;
+            this.accountMapper = accountMapper;
+            this.accountValidator = accountValidator;
+            this.transactionRepository = transactionRepository;
     }
 
     // create a new account
@@ -68,7 +74,7 @@ public class AccountService {
     }
 
     // deposit money
-    public AccountResponse deposit(Long accountId, BigDecimal amount){
+    public AccountResponse deposit(Long accountId, BigDecimal amount, String remarks){
 
         Account account = findAccount(accountId);
 
@@ -80,11 +86,22 @@ public class AccountService {
 
         Account updatedAccount = accountRepository.save(account);
 
+        Transaction transaction = new Transaction();
+
+        transaction.setAccount(updatedAccount);
+        transaction.setAmount(amount);
+        transaction.setTransactionType(TransactionType.DEPOSIT);
+        transaction.setCreatedAt(LocalDateTime.now());
+        transaction.setRemarks(remarks);
+        transaction.setDestinationBank(null);
+
+        transactionRepository.save(transaction);
+
         return accountMapper.toResponse(updatedAccount);
     }
 
     // withdraw money
-    public AccountResponse withdraw(Long accountId, BigDecimal amount){
+    public AccountResponse withdraw(Long accountId, BigDecimal amount, String remarks){
 
         Account account = findAccount(accountId);
 
@@ -99,6 +116,16 @@ public class AccountService {
         );
 
         Account updatedAccount = accountRepository.save(account);
+
+        Transaction transaction = new Transaction();
+
+        transaction.setAccount(updatedAccount);
+        transaction.setAmount(amount);
+        transaction.setTransactionType(TransactionType.WITHDRAW);
+        transaction.setCreatedAt(LocalDateTime.now());
+        transaction.setRemarks(remarks);
+
+        transactionRepository.save(transaction);
 
         return accountMapper.toResponse(updatedAccount);
     }

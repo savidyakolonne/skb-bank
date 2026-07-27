@@ -12,4 +12,5 @@ public class WithdrawRequest {
     @NotNull(message = "Amount is required")
     @Positive(message = "Amount must be greater than zero")
     private BigDecimal amount;
+    private String remarks;
 }
