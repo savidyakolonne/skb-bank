@@ -71,6 +71,40 @@ export default function Receipt() {
 
     }
 
+    async function handleDownloadReceipt() {
+
+        try {
+
+            if (!transaction) return;
+
+            const pdf =
+                await TransactionService.downloadReceipt(transaction.id);
+
+            const url = window.URL.createObjectURL(pdf);
+
+            const link = document.createElement("a");
+
+            link.href = url;
+            link.download = `receipt-${transaction.id}.pdf`;
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+
+            window.URL.revokeObjectURL(url);
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Failed to download receipt.");
+
+        }
+
+    }
+
     return (
 
         <div className="max-w-2xl mx-auto">
@@ -161,7 +195,10 @@ export default function Receipt() {
 
                         <span className="font-bold">
 
-                            Rs. {transaction.amount}
+                            Rs. {Number(transaction.amount).toLocaleString("en-LK", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                            })}
 
                         </span>
 
@@ -193,6 +230,7 @@ export default function Receipt() {
                     </Link>
 
                     <button
+                        onClick={handleDownloadReceipt}
                         className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                     >
 

@@ -9,7 +9,11 @@ import com.skbbank.backend.transaction.dto.TransactionResponse;
 import com.skbbank.backend.transaction.dto.TransferRequest;
 import com.skbbank.backend.transaction.mapper.TransactionMapper;
 import com.skbbank.backend.transaction.enums.TransactionType;
+import com.skbbank.backend.transaction.pdf.PdfService;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,17 +26,20 @@ public class TransactionService {
     private final AccountRepository accountRepository;
     private final TransactionMapper transactionMapper;
     private final TransactionValidator transactionValidator;
+    private final PdfService pdfService;
 
     public TransactionService(
             TransactionRepository transactionRepository,
             AccountRepository accountRepository,
             TransactionMapper transactionMapper,
-            TransactionValidator transactionValidator
+            TransactionValidator transactionValidator,
+            PdfService pdfService
     ) {
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
         this.transactionMapper = transactionMapper;
         this.transactionValidator = transactionValidator;
+        this.pdfService = pdfService;
     }
 
     // Get all transactions
@@ -136,6 +143,23 @@ public class TransactionService {
         transaction.setCreatedAt(LocalDateTime.now());
 
         return transactionRepository.save(transaction);
+    }
+
+    // trans receipt
+    public ResponseEntity<byte[]> downloadReceipt(Long transactionId){
+
+        byte[] pdf =
+                pdfService.generateTransferReceipt(transactionId)
+                        .toByteArray();
+
+        return ResponseEntity.ok()
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=receipt-" + transactionId + ".pdf"
+                )
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(pdf.length)
+                .body(pdf);
     }
 
 }

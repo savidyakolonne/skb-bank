@@ -50,6 +50,19 @@ class TransactionService {
 
     return response.data.data as Transaction;
   }
+
+  async downloadReceipt(transactionId: number){
+
+    const response = await api.get(
+      `/transactions/${transactionId}/receipt`,
+      {
+        responseType: "blob",
+      }
+    );
+
+    return response.data as Blob;
+  }
+
 }
 
 export default new TransactionService();

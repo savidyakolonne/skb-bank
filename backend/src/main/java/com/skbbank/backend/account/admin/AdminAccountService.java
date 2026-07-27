@@ -54,7 +54,7 @@ public class AdminAccountService {
 
         List<TransactionResponse> transactions =
                 transactionRepository
-                        .findByAccountUserIdOrderByCreatedAtDesc(id)
+                        .findByAccountIdOrderByCreatedAtDesc(id)
                         .stream()
                         .map(transactionMapper::toResponse)
                         .toList();
