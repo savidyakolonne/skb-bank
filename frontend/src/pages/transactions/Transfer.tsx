@@ -8,6 +8,9 @@ import type { Account } from "../../types/Account";
 import BANKS from "../../constants/bank";
 import { useNavigate } from "react-router-dom";
 
+import type { Transaction } from "../../types/Transaction";
+import TransferSuccessModal from "../../components/transaction/TransferSuccessModal";
+
 export default function Transfer() {
 
     const navigate = useNavigate();
@@ -23,6 +26,11 @@ export default function Transfer() {
     const [remarks, setRemarks] = useState("");
 
     const [destinationBank, setDestinationBank] = useState("");
+
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    const [transaction, setTransaction] =
+        useState<Transaction | null>(null);
 
     useEffect(() => {
         loadAccounts();
@@ -52,7 +60,7 @@ export default function Transfer() {
 
         try {
 
-            await TransactionService.transfer({
+            const result = await TransactionService.transfer({
 
                 fromAccountId: Number(fromAccountId),
 
@@ -68,15 +76,16 @@ export default function Transfer() {
 
             toast.success("Transfer completed");
 
+            setTransaction(result);
+
+            setShowSuccessModal(true);
+
             setFromAccountId("");
             setToAccountNumber("");
             setDestinationBank("");
             setAmount("");
             setRemarks("");
 
-            navigate(
-                `/customer/receipt/${transaction.id}`
-            );
 
         } catch (err: any) {
 
@@ -238,6 +247,15 @@ export default function Transfer() {
                 </button>
 
             </form>
+
+            <TransferSuccessModal
+                open={showSuccessModal}
+                transaction={transaction}
+                onClose={() => {
+                    setShowSuccessModal(false);
+                    navigate("/dashboard");
+                }}
+            />
 
         </div>
 
