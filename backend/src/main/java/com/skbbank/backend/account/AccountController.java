@@ -5,11 +5,13 @@ import com.skbbank.backend.account.dto.CreateAccountRequest;
 import com.skbbank.backend.account.dto.DepositRequest;
 import com.skbbank.backend.account.dto.WithdrawRequest;
 import com.skbbank.backend.common.response.ApiResponse;
+import com.skbbank.backend.common.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +35,7 @@ public class AccountController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ApiResponse<AccountResponse> createAccount(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @Valid @RequestBody CreateAccountRequest request
     ) {
 
@@ -40,14 +43,32 @@ public class AccountController {
                 true,
                 "Account created successfully",
                 accountService.createAccount(
-                        request.getUserId(),
+                        userDetails.getUser().getId(),
                         request.getAccountType()
                 )
         );
     }
 
+    @Operation(summary = "Get my account")
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/my")
+    public ApiResponse<List<AccountResponse>> getMyAccounts(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ){
+        List<AccountResponse> accounts =
+                accountService.getAccountsByUser(
+                        userDetails.getUser().getId()
+                );
+
+        return new ApiResponse<>(
+                true,
+                "My accounts retrieved successfully",
+                accounts
+        );
+    }
+
     @Operation(summary = "Get all accounts")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ApiResponse<List<AccountResponse>> getAllAccounts() {
 

@@ -19,7 +19,7 @@ export default function Accounts() {
     async function loadAccounts(){
 
         const data =
-            await AccountService.getAll();
+            await AccountService.getMyAccounts();
 
         setAccounts(data);
 

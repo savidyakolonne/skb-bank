@@ -34,7 +34,7 @@ export default function Transfer() {
 
             // Temporary
             // Later replace 1 with auth.user.id
-            const data = await AccountService.getByUser(1);
+            const data = await AccountService.getMyAccounts();
 
             setAccounts(data);
 
