@@ -108,7 +108,7 @@ public class AccountController {
     }
 
     @Operation(summary = "Deposit money")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/deposit")
     public ApiResponse<AccountResponse> deposit(
             @PathVariable Long id,
@@ -123,7 +123,7 @@ public class AccountController {
     }
 
     @Operation(summary = "Withdraw money")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/withdraw")
     public ApiResponse<AccountResponse> withdraw(
             @PathVariable Long id,
