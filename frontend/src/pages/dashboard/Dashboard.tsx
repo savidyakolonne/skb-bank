@@ -30,7 +30,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-100 p-8">
+    <div className="min-h-screen">
 
       {/* Greeting */}
 
@@ -42,9 +42,9 @@ export default function Dashboard() {
 
       {/* Total Balance */}
 
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-3xl text-white p-8 shadow-lg mb-8">
+      <div className="bg-gradient-to-r from-orange-600 to-orange-700 rounded-3xl text-white p-8 shadow-lg mb-8">
 
-        <p className="text-blue-100">
+        <p className="text-orange-100">
           Total Balance
         </p>
 
@@ -70,7 +70,7 @@ export default function Dashboard() {
 
             <Link
               to="/accounts"
-              className="text-blue-600 text-sm hover:underline"
+              className="text-orange-600 text-sm hover:underline"
             >
               View All
             </Link>
@@ -118,7 +118,7 @@ export default function Dashboard() {
 
             <Link
               to="/transactions"
-              className="text-blue-600 text-sm hover:underline"
+              className="text-orange-600 text-sm hover:underline"
             >
               View All
             </Link>
@@ -176,7 +176,7 @@ export default function Dashboard() {
 
         <Link
           to="/transactions/transfer"
-          className="flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 transition rounded-2xl text-white py-5 font-semibold text-lg"
+          className="flex items-center justify-center gap-3 bg-orange-600 hover:bg-orange-700 transition rounded-2xl text-white py-5 font-semibold text-lg"
         >
           <ArrowRightLeft size={22} />
           Transfer Money

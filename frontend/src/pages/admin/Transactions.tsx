@@ -180,7 +180,7 @@ export default function Transactions() {
 
                                             <Link
                                                 to={`/admin/transactions/${transaction.id}`}
-                                                className="text-blue-600 hover:underline"
+                                                className="text-orange-600 hover:underline font-medium"
                                             >
                                                 View
                                             </Link>

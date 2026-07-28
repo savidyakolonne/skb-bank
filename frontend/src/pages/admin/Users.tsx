@@ -161,7 +161,7 @@ export default function Users() {
 
                                         <Link
                                             to={`/admin/users/${user.id}`}
-                                            className="text-blue-600 hover:underline"
+                                            className="text-orange-600 hover:underline font-medium"
                                         >
                                             View
                                         </Link>

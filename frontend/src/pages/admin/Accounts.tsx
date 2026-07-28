@@ -191,7 +191,7 @@ export default function Accounts() {
 
                                         <Link
                                             to={`/admin/accounts/${account.id}`}
-                                            className="text-blue-600 hover:underline"
+                                            className="text-orange-600 hover:underline font-medium"
                                         >
                                             View
                                         </Link>

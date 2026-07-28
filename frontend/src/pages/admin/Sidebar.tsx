@@ -42,7 +42,7 @@ export default function AdminSidebar() {
             className={({ isActive }) =>
               `rounded-lg px-4 py-3 transition ${
                 isActive
-                  ? "bg-black text-white"
+                  ? "bg-orange-600 text-white"
                   : "hover:bg-slate-100"
               }`
             }

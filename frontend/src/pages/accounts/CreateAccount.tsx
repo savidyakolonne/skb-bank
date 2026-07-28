@@ -109,7 +109,7 @@ export default function CreateAccount() {
 
                     disabled={loading}
 
-                    className="bg-blue-600 text-white px-5 py-3 rounded"
+                    className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-lg transition-all duration-300 font-semibold disabled:opacity-60"
 
                 >
 
