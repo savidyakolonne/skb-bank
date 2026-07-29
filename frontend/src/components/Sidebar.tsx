@@ -37,7 +37,7 @@ export default function CustomerSidebar() {
             className={({ isActive }) =>
               `rounded-lg px-4 py-3 transition ${
                 isActive
-                  ? "bg-blue-600 text-white"
+                  ? "bg-orange-600 text-white"
                   : "hover:bg-slate-100"
               }`
             }

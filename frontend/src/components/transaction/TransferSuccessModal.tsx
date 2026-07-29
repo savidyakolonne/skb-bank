@@ -86,7 +86,7 @@ export default function TransferSuccessModal({
 
                     <button
                         onClick={handleDownload}
-                        className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+                        className="w-full bg-orange-600 text-white py-3 rounded-lg hover:bg-orange-700 transition-all duration-300 font-semibold"
                     >
                         Download Receipt
                     </button>

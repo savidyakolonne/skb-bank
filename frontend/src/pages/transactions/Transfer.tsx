@@ -123,7 +123,7 @@ export default function Transfer() {
                         onChange={(e) =>
                             setFromAccountId(e.target.value)
                         }
-                        className="w-full border rounded-lg p-3"
+                        className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 focus:outline-none"
                     >
 
                         <option value="">
@@ -165,7 +165,7 @@ export default function Transfer() {
                         onChange={(e) =>
                             setToAccountNumber(e.target.value)
                         }
-                        className="w-full border rounded-lg p-3"
+                        className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 focus:outline-none"
                     />
 
                 </div>
@@ -182,7 +182,7 @@ export default function Transfer() {
                         onChange={(e) =>
                             setDestinationBank(e.target.value)
                         }
-                        className="w-full border rounded-lg p-3"
+                        className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 focus:outline-none"
                     >
 
                         <option value="">
@@ -217,7 +217,7 @@ export default function Transfer() {
                         onChange={(e) =>
                             setAmount(e.target.value)
                         }
-                        className="w-full border rounded-lg p-3"
+                        className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 focus:outline-none"
                     />
 
                 </div>
@@ -234,14 +234,14 @@ export default function Transfer() {
                         onChange={(e) =>
                             setRemarks(e.target.value)
                         }
-                        className="w-full border rounded-lg p-3"
+                        className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 focus:outline-none"
                     />
 
                 </div>
 
                 <button
                     type="submit"
-                    className="w-full bg-blue-600 text-white rounded-lg py-3 hover:bg-blue-700"
+                    className="w-full bg-orange-600 text-white rounded-lg py-3 hover:bg-orange-700 transition-all duration-300 font-semibold"
                 >
                     Transfer Money
                 </button>

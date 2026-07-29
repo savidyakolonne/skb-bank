@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  min-width: 1280px;
+  overflow-x: auto;
+}
+
+#root {
+  min-width: 1280px;
+}

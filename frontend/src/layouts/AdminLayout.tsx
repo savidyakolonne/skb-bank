@@ -13,7 +13,7 @@ export default function AdminLayout() {
 
         <AdminNavbar/>
 
-        <main className="p-6">
+        <main className="p-8 bg-slate-100 min-h-screen">
           <Outlet />
         </main>
 

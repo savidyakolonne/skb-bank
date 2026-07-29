@@ -107,7 +107,7 @@ export default function Dashboard() {
                 <div className="flex justify-end">
                     <Link
                         to="/admin/analytics"
-                        className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                        className="px-5 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition"
                     >
                         View Analytics →
                     </Link>

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import logo from "../../assets/adminlogo.png";
 
-export default function AdminNavbar(){
+export default function AdminNavbar() {
     const navigate = useNavigate();
     const { logout } = useAuth();
 
@@ -11,14 +11,14 @@ export default function AdminNavbar(){
         navigate("/login");
     };
 
-    return(
-        <header className=" h-16 bg-white shadow flex items-center justify-between px-8">
-           
-           <img 
-            src={logo} 
-            alt="logo" 
-            width={150}
-           />
+    return (
+        <header className=" h-24 bg-white shadow flex items-center justify-between px-8">
+
+            <img
+                src={logo}
+                alt="logo"
+                width={200}
+            />
 
             <button
                 onClick={handleLogout}
